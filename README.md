@@ -1,5 +1,3 @@
-### README para el Frontend (`proyfrontendgrupo12`)
-
 # Trabajo Final Integrador - Frontend
 ### Asignatura: Programación y Servicios Web
 ### Facultad de Ingeniería – Universidad Nacional de Jujuy (UNJU)

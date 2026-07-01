@@ -1,0 +1,47 @@
+<section class="container py-5">
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-warning" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!cargando && noEncontrado" class="text-center py-5">
+    <h3>Producto no encontrado</h3>
+    <a routerLink="/catalogo" class="btn btn-dark mt-3">Volver al catálogo</a>
+  </div>
+
+  <div *ngIf="!cargando && producto" class="row g-5 align-items-center">
+    <div class="col-md-6">
+      <img [src]="producto.imagen" [alt]="producto.nombre" class="img-fluid rounded-4 shadow">
+    </div>
+    <div class="col-md-6">
+      <span class="badge bg-light text-dark border mb-2">{{ producto.material }}</span>
+      <h1 class="fw-bold">{{ producto.nombre }}</h1>
+      <p class="text-secondary">{{ producto.descripcion }}</p>
+
+      <div class="my-4">
+        <span *ngIf="producto.descuento" class="text-decoration-line-through text-secondary me-2 fs-5">
+          {{ producto.precio | precioDescuento }}
+        </span>
+        <span class="fw-bold fs-2 text-dark">
+          {{ producto.precio | precioDescuento:(producto.descuento || 0) }}
+        </span>
+        <span *ngIf="producto.descuento" class="badge bg-danger ms-2">-{{ producto.descuento }}%</span>
+      </div>
+
+      <p *ngIf="producto.stock" class="text-success fw-semibold">
+        <i class="bi bi-check-circle me-1"></i>Disponible en stock
+      </p>
+      <p *ngIf="!producto.stock" class="text-danger fw-semibold">
+        <i class="bi bi-x-circle me-1"></i>Sin stock por el momento
+      </p>
+
+      <div class="d-flex gap-3 mt-4">
+        <button class="btn btn-dark btn-lg flex-grow-1" [disabled]="!producto.stock">
+          <i class="bi bi-whatsapp me-2"></i>Consultar por WhatsApp
+        </button>
+        <a routerLink="/catalogo" class="btn btn-outline-dark btn-lg">Volver</a>
+      </div>
+    </div>
+  </div>
+</section>

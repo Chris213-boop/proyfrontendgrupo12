@@ -1,10 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { CarritoService } from '../../services/carrito';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
-export class Navbar {}
+export class Navbar implements OnInit {
+
+  cantidadCarrito = 0;
+
+  constructor(
+    private carritoService: CarritoService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.carritoService.items$.subscribe(items => {
+      this.cantidadCarrito = items.reduce((acc, i) => acc + i.cantidad, 0);
+      this.cdr.detectChanges();
+    });
+  }
+}

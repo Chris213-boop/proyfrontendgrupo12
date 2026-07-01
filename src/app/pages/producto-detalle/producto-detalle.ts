@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto';
 import { ProductoService } from '../../services/producto';
+import { CarritoService } from '../../services/carrito';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
 
 @Component({
@@ -16,11 +17,15 @@ export class ProductoDetalle implements OnInit {
   producto: Producto | undefined;
   cargando = true;
   noEncontrado = false;
+  cantidad = 1;
+  agregado = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private productoService: ProductoService,
-    private cdr:ChangeDetectorRef
+    private carritoService: CarritoService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -35,4 +40,28 @@ export class ProductoDetalle implements OnInit {
       });
     });
   }
+
+  aumentarCantidad(): void {
+    this.cantidad++;
+  }
+
+  disminuirCantidad(): void {
+    if (this.cantidad > 1) this.cantidad--;
+  }
+
+  agregarAlCarrito(): void {
+    if (!this.producto) return;
+    this.carritoService.agregar(this.producto, this.cantidad);
+    this.agregado = true;
+    setTimeout(() => {
+      this.agregado = false;
+      this.cdr.detectChanges();
+    }, 2000);
+    this.cdr.detectChanges();
+  }
+
+  irAlCarrito(): void {
+    this.router.navigate(['/carrito']);
+  }
 }
+

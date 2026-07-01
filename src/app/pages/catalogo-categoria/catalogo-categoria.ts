@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto';
 import { ProductoService } from '../../services/producto';
+import { CarritoService } from '../../services/carrito';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
 
 @Component({
@@ -16,6 +17,7 @@ export class CatalogoCategoria implements OnInit {
   productos: Producto[] = [];
   categoria = '';
   cargando = true;
+  agregadoId: number | null = null;
 
   nombresCategoria: { [key: string]: string } = {
     anillos: 'Anillos',
@@ -27,6 +29,7 @@ export class CatalogoCategoria implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productoService: ProductoService,
+    private carritoService: CarritoService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -48,5 +51,16 @@ export class CatalogoCategoria implements OnInit {
       this.cargando = false;
       this.cdr.detectChanges();
     });
+  }
+
+  agregarAlCarrito(producto: Producto): void {
+    if (!producto.stock) return;
+    this.carritoService.agregar(producto, 1);
+    this.agregadoId = producto.id;
+    setTimeout(() => {
+      this.agregadoId = null;
+      this.cdr.detectChanges();
+    }, 1500);
+    this.cdr.detectChanges();
   }
 }

@@ -9,14 +9,14 @@ import { MensajeContacto } from '../models/mensaje-contacto';
 })
 export class ContactoService {
 
-  private apiUrl = 'https://tu-api-real.com/api/contacto';
+  private apiUrl = 'http://localhost:3000/api/contacto';
 
   constructor(private http: HttpClient) { }
 
-  enviarMensaje(mensaje: MensajeContacto): Observable<{ ok: boolean }> {
+  enviarMensaje(mensaje: MensajeContacto): Observable<any> {
     // Cuando este lista la API real, reemplazar por:
-    // return this.http.post<{ ok: boolean }>(this.apiUrl, mensaje);
-    console.log('Mensaje de contacto enviado (mock):', mensaje);
-    return of({ ok: true }).pipe(delay(500));
+    return this.http.post(this.apiUrl, mensaje);
+    //console.log('Mensaje de contacto enviado (mock):', mensaje);
+    //return of({ ok: true }).pipe(delay(500));
   }
 }

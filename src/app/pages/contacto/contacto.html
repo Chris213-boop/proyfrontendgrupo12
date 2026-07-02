@@ -10,7 +10,7 @@
       </div>
 
       <div *ngIf="error" class="alert alert-danger text-center">
-        <i class="bi bi-exclamation-triangle me-2"></i>Ocurrió un error al enviar tu mensaje. Intentá de nuevo.
+        <i class="bi bi-exclamation-triangle me-2"></i>Ocurrió un error al enviar. Revisá las keys de EmailJS en environment.ts
       </div>
 
       <form [formGroup]="formulario" (ngSubmit)="onSubmit()" novalidate>
@@ -21,8 +21,8 @@
             [class.is-invalid]="nombre?.invalid && nombre?.touched">
           <div class="invalid-feedback" *ngIf="nombre?.touched">
             <span *ngIf="nombre?.errors?.['required']">El nombre es obligatorio.</span>
-            <span *ngIf="nombre?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres.</span>
-            <span *ngIf="nombre?.errors?.['nombreFormato']">El nombre solo puede contener letras.</span>
+            <span *ngIf="nombre?.errors?.['minlength']">Mínimo 3 caracteres.</span>
+            <span *ngIf="nombre?.errors?.['nombreFormato']">Solo puede contener letras.</span>
           </div>
         </div>
 
@@ -36,7 +36,6 @@
               <span *ngIf="email?.errors?.['email']">Ingresá un email válido.</span>
             </div>
           </div>
-
           <div class="col-md-6 mb-3">
             <label for="telefono" class="form-label">Teléfono</label>
             <input type="text" id="telefono" class="form-control" formControlName="telefono"
@@ -45,7 +44,7 @@
             <div class="invalid-feedback" *ngIf="telefono?.touched">
               <span *ngIf="telefono?.errors?.['required']">El teléfono es obligatorio.</span>
               <span *ngIf="telefono?.errors?.['telefonoFormato']">Solo se permiten números.</span>
-              <span *ngIf="telefono?.errors?.['telefonoLongitud']">Debe tener entre 8 y 15 dígitos.</span>
+              <span *ngIf="telefono?.errors?.['telefonoLongitud']">Entre 8 y 15 dígitos.</span>
             </div>
           </div>
         </div>
@@ -71,8 +70,8 @@
             [class.is-invalid]="mensaje?.invalid && mensaje?.touched"></textarea>
           <div class="invalid-feedback" *ngIf="mensaje?.touched">
             <span *ngIf="mensaje?.errors?.['required']">El mensaje es obligatorio.</span>
-            <span *ngIf="mensaje?.errors?.['minlength']">El mensaje debe tener al menos 10 caracteres.</span>
-            <span *ngIf="mensaje?.errors?.['maxlength']">El mensaje no puede superar los 500 caracteres.</span>
+            <span *ngIf="mensaje?.errors?.['minlength']">Mínimo 10 caracteres.</span>
+            <span *ngIf="mensaje?.errors?.['maxlength']">Máximo 500 caracteres.</span>
           </div>
         </div>
 
@@ -85,4 +84,18 @@
       </form>
     </div>
   </div>
+</section>
+
+<section class="container pb-5">
+  <h2 class="text-center fw-bold mb-2">Dónde estamos</h2>
+  <p class="text-center text-secondary mb-4">
+    <i class="bi bi-geo-alt me-1"></i>San Salvador de Jujuy, Argentina
+  </p>
+  <app-google-map
+    [lat]="-24.1858"
+    [lng]="-65.2995"
+    [zoom]="16"
+    titulo="Joyería Lumière"
+    altura="350px">
+  </app-google-map>
 </section>

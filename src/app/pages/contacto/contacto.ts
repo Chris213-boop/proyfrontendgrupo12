@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContactoService } from '../../services/contacto';
+import { GoogleMap } from '../../components/google-map/google-map';
 import { telefonoValidator } from '../../validators/telefono.validator';
 import { nombreValidator } from '../../validators/nombre.validator';
 
 @Component({
   selector: 'app-contacto',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, GoogleMap],
   templateUrl: './contacto.html',
   styleUrl: './contacto.css'
 })

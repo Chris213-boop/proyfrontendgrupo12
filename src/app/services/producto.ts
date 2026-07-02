@@ -9,7 +9,7 @@ import { Producto } from '../models/producto';
 })
 export class ProductoService {
 
-  private apiUrl = 'https://tu-api-real.com/api/productos';
+  private apiUrl = 'http://localhost:3000/api/productos';
 
   private productosMock: Producto[] = [
     {
@@ -150,25 +150,25 @@ export class ProductoService {
 
   getProductos(): Observable<Producto[]> {
     // Cuando este lista la API real, reemplazar por:
-    // return this.http.get<Producto[]>(this.apiUrl);
-    return of(this.productosMock).pipe(delay(300));
+    return this.http.get<Producto[]>(this.apiUrl);
+    //return of(this.productosMock).pipe(delay(300));
   }
 
   getProductosPorCategoria(categoria: string): Observable<Producto[]> {
-    // return this.http.get<Producto[]>(`${this.apiUrl}?categoria=${categoria}`);
-    const filtrados = this.productosMock.filter(p => p.categoria === categoria);
-    return of(filtrados).pipe(delay(300));
+    return this.http.get<Producto[]>(`${this.apiUrl}?categoria=${categoria}`);
+    //const filtrados = this.productosMock.filter(p => p.categoria === categoria);
+    //return of(filtrados).pipe(delay(300));
   }
 
   getProductoPorId(id: number): Observable<Producto | undefined> {
-    // return this.http.get<Producto>(`${this.apiUrl}/${id}`);
-    const producto = this.productosMock.find(p => p.id === id);
-    return of(producto).pipe(delay(300));
+    return this.http.get<Producto>(`${this.apiUrl}/${id}`);
+    //const producto = this.productosMock.find(p => p.id === id);
+    //return of(producto).pipe(delay(300));
   }
 
   getDestacados(): Observable<Producto[]> {
-    // return this.http.get<Producto[]>(`${this.apiUrl}/destacados`);
-    const destacados = this.productosMock.filter(p => p.destacado);
-    return of(destacados).pipe(delay(300));
+    return this.http.get<Producto[]>(`${this.apiUrl}/destacados`);
+    //const destacados = this.productosMock.filter(p => p.destacado);
+    //return of(destacados).pipe(delay(300));
   }
 }

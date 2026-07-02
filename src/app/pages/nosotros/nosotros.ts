@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GoogleMap } from '../../components/google-map/google-map';
 
 interface Valor {
   icono: string;
@@ -9,7 +10,7 @@ interface Valor {
 
 @Component({
   selector: 'app-nosotros',
-  imports: [CommonModule],
+  imports: [CommonModule, GoogleMap],
   templateUrl: './nosotros.html',
   styleUrl: './nosotros.css'
 })

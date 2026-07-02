@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Producto } from '../../models/producto';
 import { ProductoService } from '../../services/producto';
+import { CarritoService } from '../../services/carrito';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
 
 @Component({
@@ -15,9 +16,12 @@ export class Home implements OnInit {
 
   destacados: Producto[] = [];
   cargando = true;
+  agregadoId: number | null = null;
 
-  constructor(private productoService: ProductoService,
-    private cdr:ChangeDetectorRef
+  constructor(
+    private productoService: ProductoService,
+    private carritoService: CarritoService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -26,5 +30,16 @@ export class Home implements OnInit {
       this.cargando = false;
       this.cdr.detectChanges();
     });
+  }
+
+  agregarAlCarrito(producto: Producto): void {
+    if (!producto.stock) return;
+    this.carritoService.agregar(producto, 1);
+    this.agregadoId = producto.id;
+    setTimeout(() => {
+      this.agregadoId = null;
+      this.cdr.detectChanges();
+    }, 1500);
+    this.cdr.detectChanges();
   }
 }

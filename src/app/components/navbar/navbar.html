@@ -10,7 +10,8 @@
     <div class="collapse navbar-collapse" id="navbarMenu">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0 text-center">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">Inicio</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" routerLink="/catalogo" routerLinkActive="active">Catálogo</a>
@@ -21,6 +22,15 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </li>
+        <div>
+          @if (!loginApi.userLoggedIn()) {
+          <a [routerLink]="['login']">(Login)</a>
+          } @else {
+          <a [routerLink]="['login']" (click)="logout()">
+            {{ loginApi.userLogged() }} (logout)
+          </a>
+          }
+        </div>
         <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
           <a class="btn btn-outline-light position-relative" routerLink="/carrito">
             <i class="bi bi-cart3"></i>

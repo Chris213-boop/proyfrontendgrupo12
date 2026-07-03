@@ -22,15 +22,34 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </li>
-        <div>
-          @if (!loginApi.userLoggedIn()) {
-          <a [routerLink]="['login']">(Login)</a>
-          } @else {
-          <a [routerLink]="['login']" (click)="logout()">
-            {{ loginApi.userLogged() }} (logout)
-          </a>
-          }
-        </div>
+        <span *ngIf="!loginApi.userLoggedIn()">
+          <li class="nav-item">
+            <a class="btn btn-outline-light" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+          </li>
+        </span>
+        <span *ngIf="loginApi.userLoggedIn()">
+          <li class="nav-item dropdown">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li>
+                <span class="dropdown-item" >Usuario: {{ loginApi.userLogged() }}</span>
+              </li>
+              <li>
+                <span class="dropdown-item" >Perfil: {{ loginApi.getPerfil() }}</span>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/login" routerLinkActive="active" (click)="logout()">
+                  Cerrar Sesión
+                </a>
+              </li>
+            </ul>
+          </li>
+        </span>
         <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
           <a class="btn btn-outline-light position-relative" routerLink="/carrito">
             <i class="bi bi-cart3"></i>

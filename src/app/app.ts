@@ -10,4 +10,9 @@ import { Footer } from './components/footer/footer';
   styleUrl: './app.css'
 })
 export class App {
+  constructor() { }
+  ngOnInit(): void {
+    sessionStorage.removeItem("token");
+  }
+  title = 'tp-angular';
 }

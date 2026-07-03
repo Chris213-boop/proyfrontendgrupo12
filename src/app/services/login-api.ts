@@ -23,6 +23,7 @@ export class LoginApi {
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("perfil");
     sessionStorage.removeItem("userid");
+    sessionStorage.removeItem("token");
   }
   public userLoggedIn() {
     var resultado = false;
@@ -45,4 +46,9 @@ export class LoginApi {
     var perfil = sessionStorage.getItem("perfil");
     return perfil;
   }
+
+  getToken():string{
+    return sessionStorage.getItem("token") as string;
+  }
+
 }

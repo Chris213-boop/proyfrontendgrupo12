@@ -32,6 +32,7 @@ export class LoginForm {
             sessionStorage.setItem("user", user.username);
             sessionStorage.setItem("userid", user.userid);
             sessionStorage.setItem("perfil", user.perfil);
+            sessionStorage.setItem("token", user.token);
             //redirigimos a home o a pagina que llamo
             this.router.navigateByUrl(this.returnUrl);
           } else {

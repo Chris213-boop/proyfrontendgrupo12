@@ -44,10 +44,10 @@ export class GoogleMap implements OnInit, AfterViewInit {
 
     const script = document.createElement('script');
     script.id = 'google-maps-script';
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&language=es`;
     script.async = true;
     script.defer = true;
-    script.onload = () => this.inicializarMapa();
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}&language=es&loading=async&callback=initMap`;
+    (window as any)['initMap'] = () => this.inicializarMapa();
     script.onerror = () => {
       this.error = true;
       this.cargando = false;

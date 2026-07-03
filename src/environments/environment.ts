@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  googleMapsApiKey: 'TU_API_KEY_AQUI',
-  emailjsServiceId: 'TU_EMAILJS_SERVICE_ID',
-  emailjsTemplateId: 'TU_EMAILJS_TEMPLATE_ID',
-  emailjsPublicKey: 'TU_EMAILJS_PUBLIC_KEY'
+  googleMapsApiKey: 'AIzaSyAYrlwZ0knb-lgLlw6P6XOzUCbRrXJ2beE',
+  emailjsServiceId: 'service_rqzzf4c',
+  emailjsTemplateId: 'template_y54ccbr',
+  emailjsPublicKey: 'QYWqfUYkWNybnPL2G'
 };

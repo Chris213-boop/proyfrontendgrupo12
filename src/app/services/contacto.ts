@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { from, Observable } from 'rxjs';
+import emailjs from '@emailjs/browser';
+import { environment } from '../../environments/environment';
 import { MensajeContacto } from '../models/mensaje-contacto';
 
 @Injectable({
@@ -9,14 +9,26 @@ import { MensajeContacto } from '../models/mensaje-contacto';
 })
 export class ContactoService {
 
-  private apiUrl = 'https://tu-api-real.com/api/contacto';
+  constructor() {
+    emailjs.init(environment.emailjsPublicKey);
+  }
 
-  constructor(private http: HttpClient) { }
+  enviarMensaje(mensaje: MensajeContacto): Observable<any> {
+    const templateParams = {
+      from_name: mensaje.nombre,
+      from_email: mensaje.email,
+      phone: mensaje.telefono,
+      subject: mensaje.asunto,
+      message: mensaje.mensaje,
+      to_name: 'Joyería Lumière'
+    };
 
-  enviarMensaje(mensaje: MensajeContacto): Observable<{ ok: boolean }> {
-    // Cuando este lista la API real, reemplazar por:
-    // return this.http.post<{ ok: boolean }>(this.apiUrl, mensaje);
-    console.log('Mensaje de contacto enviado (mock):', mensaje);
-    return of({ ok: true }).pipe(delay(500));
+    return from(
+      emailjs.send(
+        environment.emailjsServiceId,
+        environment.emailjsTemplateId,
+        templateParams
+      )
+    );
   }
 }

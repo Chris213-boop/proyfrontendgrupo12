@@ -39,7 +39,7 @@ export class Catalogo {
     {
       nombre: 'Pulseras',
       slug: 'pulseras',
-      imagen: 'https://images.unsplash.com/photo-1602752275197-909bcdc01dfc?w=600',
+      imagen: 'https://images.unsplash.com/photo-1689367436629-1d288f1e23b6?w=600"',
       icono: 'bi-arrow-repeat'
     }
   ];

@@ -73,7 +73,7 @@ export class Checkout implements OnInit {
     }).subscribe({
       next: (respuesta) => {
         this.carritoService.vaciar();
-        window.location.href = respuesta.initPoint;
+        window.location.href = respuesta.init_point;
       },
       error: () => {
         this.procesando = false;

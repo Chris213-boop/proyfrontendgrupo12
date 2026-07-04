@@ -1,24 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { ItemCarrito } from '../models/item-carrito';
+
+export interface CompradorMp {
+  nombre: string;
+  email: string;
+  telefono: string;
+  direccion: string;
+  ciudad: string;
+  provincia: string;
+}
+
+export interface ProductoMp {
+  title: string;
+  description: string;
+  picture_url: string;
+  category_id: string;
+  quantity: number;
+  unit_price: number;
+}
 
 export interface PreferenciaPago {
   items: ItemCarrito[];
-  comprador: {
-    nombre: string;
-    email: string;
-    telefono: string;
-    direccion: string;
-    ciudad: string;
-    provincia: string;
-  };
+  comprador: CompradorMp;
+}
+
+export interface PreferenciaPagoRequest {
+  items: ProductoMp[];
+  comprador: CompradorMp;
 }
 
 export interface RespuestaPago {
   preferenceId: string;
-  initPoint: string;    // URL de MercadoPago para redirigir al usuario
+  init_point: string;
   sandboxInitPoint: string;
 }
 
@@ -26,13 +42,32 @@ export interface RespuestaPago {
   providedIn: 'root'
 })
 export class PagoService {
-
-  // Cuando el backend esté listo, este endpoint crea la preferencia en MP
   private apiUrl = 'http://localhost:3000/api/mp/payment';
 
   constructor(private http: HttpClient) {}
 
-  crearPreferencia(datos: PreferenciaPago): Observable<RespuestaPago> {
-     return this.http.post<RespuestaPago>(this.apiUrl, datos);
+  crearPreferencia(carrito: PreferenciaPago): Observable<RespuestaPago> {
+    const payload: PreferenciaPagoRequest = {
+      items: this.mapItemsToProductosMp(carrito.items),
+      comprador: carrito.comprador
+    };
+
+    return this.http.post<RespuestaPago>(this.apiUrl, payload).pipe(
+      catchError(error => {
+        console.error('Error al crear la preferencia de pago', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  private mapItemsToProductosMp(items: ItemCarrito[]): ProductoMp[] {
+    return items.map(item => ({
+      title: item.producto.nombre,
+      description: item.producto.descripcion,
+      picture_url: item.producto.imagen,
+      category_id: item.producto.categoria,
+      quantity: item.cantidad,
+      unit_price: item.producto.precio
+    }));
   }
 }

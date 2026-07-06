@@ -22,6 +22,11 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </li>
+        <span *ngIf="loginApi.userLoggedIn()">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/stock" routerLinkActive="active">Stock</a>
+          </li>
+        </span>
         <span *ngIf="!loginApi.userLoggedIn()">
           <li class="nav-item">
             <a class="btn btn-outline-light" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>

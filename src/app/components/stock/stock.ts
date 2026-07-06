@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
 import { Producto } from '../../models/producto';
 import { CommonModule } from '@angular/common';
@@ -19,6 +20,7 @@ export class Stock {
   mostrarModal = false;
   guardando = false;
   productoSeleccionado: Producto | null = null;
+  modoEdicion = false; // true = editar, false = crear nuevo
 
   mostrarModalBorrar = false;
   borrando = false;
@@ -30,6 +32,10 @@ export class Stock {
   ) {}
 
   ngOnInit(): void {
+    this.cargarProductos();
+  }
+
+  cargarProductos(){
     this.productoService.getProductos().subscribe(productos => {
       this.productos = productos;
       this.cargando = false;
@@ -38,32 +44,52 @@ export class Stock {
   }
 
   editar(producto: Producto){
-    // Trabajamos sobre una copia para no mutar la lista hasta confirmar el guardado
+    this.modoEdicion = true;
     this.productoSeleccionado = { ...producto };
+    this.mostrarModal = true;
+  }
+
+  agregar(){
+    this.modoEdicion = false;
+    this.productoSeleccionado = {
+      id:0,
+      nombre: '',
+      categoria: '',
+      precio: 0,
+      descuento: 0,
+      imagen: '',
+      descripcion: '',
+      material: '',
+      destacado: false,
+      stock: true
+    };
     this.mostrarModal = true;
   }
 
   cerrarModal(){
     this.mostrarModal = false;
     this.productoSeleccionado = null;
+    this.modoEdicion = false;
   }
 
-  guardarEdicion(){
+  guardarEdicionoAgregar(){
     if (!this.productoSeleccionado) return;
     this.guardando = true;
-    this.productoService.editProducto(this.productoSeleccionado).subscribe({
+
+    const peticion = this.modoEdicion
+      ? this.productoService.editProducto(this.productoSeleccionado)
+      : this.productoService.addProducto(this.productoSeleccionado);
+
+    peticion.subscribe({
       next: () => {
         this.guardando = false;
         this.cerrarModal();
+        this.cargarProductos();
       },
       error: (err) => {
         console.error(err);
         this.guardando = false;
       }
-    });
-    this.productoService.getProductos().subscribe(productos => {
-      this.productos = productos;
-      this.cdr.detectChanges();
     });
   }
 
@@ -72,28 +98,45 @@ export class Stock {
     this.mostrarModalBorrar = true;
   }
 
-    cerrarModalBorrar(){
+  cerrarModalBorrar(){
     this.mostrarModalBorrar = false;
     this.productoABorrar = null;
   }
- 
+
   confirmarBorrado(){
     if (!this.productoABorrar) return;
- 
+
     this.borrando = true;
     this.productoService.deleteProducto(this.productoABorrar).subscribe({
       next: () => {
         this.borrando = false;
         this.cerrarModalBorrar();
+        this.cargarProductos();
       },
       error: (err) => {
         console.error(err);
         this.borrando = false;
       }
     });
-    this.productoService.getProductos().subscribe(productos => {
-      this.productos = productos;
-      this.cdr.detectChanges();
+  }
+
+  montarMock(){
+    const productosMock = this.productoService.getProductosMock();
+
+    this.cargando = true;
+    forkJoin(
+      productosMock.map(producto => this.productoService.addProducto(producto))
+    ).subscribe({
+      next: (msg) => {
+        console.log(msg);
+        this.cargando = false;
+        this.cargarProductos();
+      },
+      error: (err) => {
+        console.error(err);
+        this.cargando = false;
+        this.cargarProductos();
+      }
     });
   }
 }

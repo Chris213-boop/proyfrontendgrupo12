@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Usuario } from '../models/usuario';
 @Injectable({
   providedIn: 'root',
 })
@@ -51,4 +52,15 @@ export class LoginApi {
     return sessionStorage.getItem("token") as string;
   }
 
+  public register(userform: Usuario): Observable<any>{
+    const httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    let body = JSON.stringify(userform);
+    console.log(userform);
+    console.log(body);
+    return this._http.post(this.hostBase, body, httpOption);
+  }
 }

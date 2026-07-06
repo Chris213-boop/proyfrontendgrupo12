@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Usuario } from '../../models/usuario';
 import { LoginApi } from '../../services/login-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-login-form',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
 })
@@ -17,7 +17,8 @@ export class LoginForm {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private loginApi: LoginApi) {
+    private loginApi: LoginApi,
+    private cdr:ChangeDetectorRef) {
   }
   ngOnInit() {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -37,7 +38,8 @@ export class LoginForm {
             this.router.navigateByUrl(this.returnUrl);
           } else {
             //usuario no encontrado muestro mensaje en la vista
-            this.msglogin = "Credenciales incorrectas..";
+            this.msglogin = "Credenciales incorrectas.";
+            this.cdr.detectChanges();
           }
         },
         error => {

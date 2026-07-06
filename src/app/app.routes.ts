@@ -9,6 +9,7 @@ import { Carrito } from './pages/carrito/carrito';
 import { Checkout } from './pages/checkout/checkout';
 import { NotFound } from './pages/not-found/not-found';
 import { LoginForm } from './components/login-form/login-form';
+import { RegisterForm } from './components/register-form/register-form';
 
 export const routes: Routes = [
   { path: '', component: Home, title: 'Joyería Lumière | Inicio' },
@@ -20,6 +21,6 @@ export const routes: Routes = [
   { path: 'carrito', component: Carrito, title: 'Joyería Lumière | Carrito' },
   { path: 'checkout', component: Checkout, title: 'Joyería Lumière | Checkout' },
   { path: 'login', component: LoginForm},
+  { path: 'register', component: RegisterForm},
   { path: '**', component: NotFound, title: 'Página no encontrada' }
-  
 ];

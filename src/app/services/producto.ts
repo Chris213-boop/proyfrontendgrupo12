@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Producto } from '../models/producto';
@@ -162,5 +162,15 @@ export class ProductoService {
 
   getDestacados(): Observable<Producto[]> {
     return this.http.get<Producto[]>(`${this.apiUrl}/destacados`);
+  }
+
+  editProducto(producto: Producto): Observable<any> {
+    const httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    let body = JSON.stringify(producto);
+    return this.http.put<Producto[]>(`${this.apiUrl}/${producto.id}`, body, httpOption);
   }
 }

@@ -11,8 +11,5 @@ import { Footer } from './components/footer/footer';
 })
 export class App {
   constructor() { }
-  ngOnInit(): void {
-    sessionStorage.removeItem("token");
-  }
   title = 'tp-angular';
 }

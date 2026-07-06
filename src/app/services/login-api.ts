@@ -59,8 +59,6 @@ export class LoginApi {
       })
     }
     let body = JSON.stringify(userform);
-    console.log(userform);
-    console.log(body);
     return this._http.post(this.hostBase, body, httpOption);
   }
 }

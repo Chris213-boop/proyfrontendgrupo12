@@ -172,4 +172,30 @@
       </div>
     </div>
   </div>
+    <!-- Modal de confirmación de borrado -->
+  <div class="modal-backdrop-custom" *ngIf="mostrarModalBorrar">
+    <div class="modal d-block" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" *ngIf="productoABorrar as producto">
+          <div class="modal-header">
+            <h5 class="modal-title">Eliminar producto</h5>
+            <button type="button" class="btn-close" (click)="cerrarModalBorrar()"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-0">
+              ¿Estás seguro de que querés eliminar
+              <strong>{{ producto.nombre }}</strong>? Esta acción no se puede deshacer.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarModalBorrar()">Cancelar</button>
+            <button type="button" class="btn btn-danger" [disabled]="borrando" (click)="confirmarBorrado()">
+              <span *ngIf="borrando" class="spinner-border spinner-border-sm me-1"></span>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>

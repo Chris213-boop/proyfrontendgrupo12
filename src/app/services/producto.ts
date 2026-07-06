@@ -173,4 +173,8 @@ export class ProductoService {
     let body = JSON.stringify(producto);
     return this.http.put<Producto[]>(`${this.apiUrl}/${producto.id}`, body, httpOption);
   }
+
+  deleteProducto(producto: Producto): Observable<any> {
+    return this.http.delete<Producto[]>(`${this.apiUrl}/${producto.id}`);
+  }
 }

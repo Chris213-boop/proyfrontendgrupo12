@@ -20,6 +20,10 @@ export class Stock {
   guardando = false;
   productoSeleccionado: Producto | null = null;
 
+  mostrarModalBorrar = false;
+  borrando = false;
+  productoABorrar: Producto | null = null;
+
   constructor(
     private productoService: ProductoService,
     private cdr: ChangeDetectorRef
@@ -46,11 +50,9 @@ export class Stock {
 
   guardarEdicion(){
     if (!this.productoSeleccionado) return;
-
     this.guardando = true;
-    // TODO: ajustar el nombre del método según lo que exponga tu ProductoService
     this.productoService.editProducto(this.productoSeleccionado).subscribe({
-      next: (actualizado) => {
+      next: () => {
         this.guardando = false;
         this.cerrarModal();
       },
@@ -66,6 +68,32 @@ export class Stock {
   }
 
   borrar(producto: Producto){
-    console.log(producto);
+    this.productoABorrar = producto;
+    this.mostrarModalBorrar = true;
+  }
+
+    cerrarModalBorrar(){
+    this.mostrarModalBorrar = false;
+    this.productoABorrar = null;
+  }
+ 
+  confirmarBorrado(){
+    if (!this.productoABorrar) return;
+ 
+    this.borrando = true;
+    this.productoService.deleteProducto(this.productoABorrar).subscribe({
+      next: () => {
+        this.borrando = false;
+        this.cerrarModalBorrar();
+      },
+      error: (err) => {
+        console.error(err);
+        this.borrando = false;
+      }
+    });
+    this.productoService.getProductos().subscribe(productos => {
+      this.productos = productos;
+      this.cdr.detectChanges();
+    });
   }
 }

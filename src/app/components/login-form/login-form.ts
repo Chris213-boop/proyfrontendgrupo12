@@ -36,7 +36,7 @@ export class LoginForm {
             sessionStorage.setItem("perfil", user.perfil);
             sessionStorage.setItem("token", user.token);
             // Redirección según el perfil
-            if (user.perfil === 'Administrador') {
+            if (user.perfil === 'administrador' || user.perfil === 'Administrador') {
               this.router.navigate(['/admin/dashboard']);
             } else {
               this.router.navigateByUrl(this.returnUrl);

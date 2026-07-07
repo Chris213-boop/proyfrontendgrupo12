@@ -16,7 +16,7 @@ export class Usuarios implements OnInit {
   usuarioSeleccionado: Usuario | null = null;
   estadisticas = {
     administradores: 0,
-    gerentes: 0,
+    empleados: 0,
     clientes: 0,
     total: 0
   };
@@ -44,7 +44,7 @@ export class Usuarios implements OnInit {
 
     this.estadisticas = {
       administradores: this.usuarios.filter((usuario) => perfilNormalizado(usuario.perfil) === 'administrador').length,
-      gerentes: this.usuarios.filter((usuario) => perfilNormalizado(usuario.perfil) === 'gerente').length,
+      empleados: this.usuarios.filter((usuario) => perfilNormalizado(usuario.perfil) === 'empleado').length,
       clientes: this.usuarios.filter((usuario) => perfilNormalizado(usuario.perfil) === 'cliente').length,
       total: this.usuarios.length
     };
@@ -57,8 +57,8 @@ export class Usuarios implements OnInit {
       return 'Administrador';
     }
 
-    if (perfilNormalizado === 'gerente') {
-      return 'Gerente';
+    if (perfilNormalizado === 'empleado') {
+      return 'Empleado';
     }
 
     return 'Cliente';

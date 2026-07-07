@@ -5,12 +5,22 @@ import { environment } from '../../environments/environment';
 import { ItemCarrito } from '../models/item-carrito';
 
 export interface CompradorMp {
-  nombre: string;
-  email: string;
-  telefono: string;
-  direccion: string;
-  ciudad: string;
-  provincia: string;
+  email: string,
+  name: string,
+  surname: string,
+  phone: {
+      area_code: string,
+      number: string,
+  },
+  identification:{
+      type: string,
+      number: string
+  },
+  address: {
+      street_name: string,
+      street_number: number,
+      zip_code: string
+  }
 }
 
 export interface ProductoMp {

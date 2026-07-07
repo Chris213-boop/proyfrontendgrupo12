@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { ItemCarrito } from '../../models/item-carrito';
 import { CarritoService } from '../../services/carrito';
-import { PagoService } from '../../services/pago';
+import { PagoService, CompradorMp } from '../../services/pago';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
 
 @Component({
@@ -29,9 +29,14 @@ export class Checkout implements OnInit {
   ) {
     this.formulario = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{8,15}$/)]],
-      direccion: ['', [Validators.required, Validators.minLength(5)]],
+      codigoArea: ['', [Validators.required, Validators.pattern(/^[0-9]{2,5}$/)]],
+      telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{6,15}$/)]],
+      dni: ['', [Validators.required, Validators.pattern(/^[0-9]{7,9}$/)]],
+      calle: ['', [Validators.required, Validators.minLength(3)]],
+      numero: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      codigoPostal: ['', [Validators.required, Validators.pattern(/^[0-9]{4}$/)]],
       ciudad: ['', Validators.required],
       provincia: ['', Validators.required],
     });
@@ -48,15 +53,42 @@ export class Checkout implements OnInit {
   }
 
   get nombre() { return this.formulario.get('nombre'); }
+  get apellido() { return this.formulario.get('apellido'); }
   get email() { return this.formulario.get('email'); }
+  get codigoArea() { return this.formulario.get('codigoArea'); }
   get telefono() { return this.formulario.get('telefono'); }
-  get direccion() { return this.formulario.get('direccion'); }
+  get dni() { return this.formulario.get('dni'); }
+  get calle() { return this.formulario.get('calle'); }
+  get numero() { return this.formulario.get('numero'); }
+  get codigoPostal() { return this.formulario.get('codigoPostal'); }
   get ciudad() { return this.formulario.get('ciudad'); }
   get provincia() { return this.formulario.get('provincia'); }
 
   get subtotal(): number { return this.carritoService.subtotal; }
   get envio(): number { return this.subtotal >= 40000 ? 0 : 4500; }
   get total(): number { return this.subtotal + this.envio; }
+
+  private construirComprador(): CompradorMp {
+    const v = this.formulario.value;
+    return {
+      email: v.email,
+      name: v.nombre,
+      surname: v.apellido,
+      phone: {
+        area_code: v.codigoArea,
+        number: v.telefono
+      },
+      identification: {
+        type: 'DNI',
+        number: v.dni
+      },
+      address: {
+        street_name: v.calle,
+        street_number: Number(v.numero),
+        zip_code: v.codigoPostal
+      }
+    };
+  }
 
   onSubmit(): void {
     if (this.formulario.invalid) {
@@ -69,7 +101,7 @@ export class Checkout implements OnInit {
 
     this.pagoService.crearPreferencia({
       items: this.items,
-      comprador: this.formulario.value
+      comprador: this.construirComprador()
     }).subscribe({
       next: (respuesta) => {
         this.carritoService.vaciar();

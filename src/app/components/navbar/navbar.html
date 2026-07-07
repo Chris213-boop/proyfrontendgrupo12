@@ -22,7 +22,7 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </li>
-        <span *ngIf="loginApi.getPerfil()==='empleado'">
+        <span *ngIf="loginApi.getPerfil()==='Empleado'">
           <li class="nav-item">
             <a class="nav-link" routerLink="/stock" routerLinkActive="active">Stock</a>
           </li>
@@ -32,7 +32,7 @@
             <a class="btn btn-outline-light" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
           </li>
         </span>
-        <span *ngIf="loginApi.getPerfil==='Empleado'">
+        <span *ngIf="loginApi.userLoggedIn()">
           <li class="nav-item dropdown">
             <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="bi bi-person"></i>

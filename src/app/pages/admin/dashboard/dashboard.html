@@ -1,0 +1,120 @@
+<div class="container-fluid">
+    <div class="mb-4">
+        <h2 class="fw-bold">
+            Dashboard
+        </h2>
+        <p class="text-muted">
+            Bienvenido al panel de administración de <strong>Lumière</strong>.
+        </p>
+    </div>
+
+    <div *ngIf="cargando" class="text-muted">
+        Cargando datos del dashboard...
+    </div>
+
+    <div *ngIf="!cargando" class="row g-4">
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-people me-2"></i> Usuarios
+                    </h6>
+                    <h2 class="fw-bold">
+                        {{ estadisticas.usuarios }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-gem me-2"></i> Productos
+                    </h6>
+                    <h2 class="fw-bold">
+                        {{ estadisticas.productos }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-box-seam me-2"></i> Pedidos
+                    </h6>
+                    <h2 class="fw-bold">
+                        {{ estadisticas.pedidos }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-cash-coin me-2"></i> Ventas del mes
+                    </h6>
+                    <h2 class="fw-bold">
+                        ${{ estadisticas.ventasMes | number:'1.0-0' }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-envelope me-2"></i> Mensajes
+                    </h6>
+                    <h2 class="fw-bold">
+                        {{ estadisticas.mensajes }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+            <div class="card shadow-sm border-0 tarjeta">
+                <div class="card-body">
+                    <h6 class="text-muted">
+                        <i class="bi bi-star me-2"></i> Clientes
+                    </h6>
+                    <h2 class="fw-bold">
+                        {{ estadisticas.clientes }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-5 shadow-sm border-0">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">
+                Estado del sistema
+            </h5>
+        </div>
+        <div class="card-body">
+            <p>
+                <i class="bi me-2" [ngClass]="estadisticas.estadoSistema.api ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                API funcionando correctamente
+            </p>
+            <p>
+                <i class="bi me-2" [ngClass]="estadisticas.estadoSistema.baseDatos ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                Base de datos conectada
+            </p>
+            <p>
+                <i class="bi me-2" [ngClass]="estadisticas.estadoSistema.mercadoPago ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                Mercado Pago activo
+            </p>
+            <p>
+                <i class="bi me-2" [ngClass]="estadisticas.estadoSistema.servidor ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'"></i>
+                Servidor operativo
+            </p>
+        </div>
+    </div>
+</div>

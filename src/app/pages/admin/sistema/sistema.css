@@ -1,0 +1,18 @@
+.card{
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header{
+    background: white;
+    font-weight: 600;
+}
+
+.badge{
+    font-size: .85rem;
+    padding: 8px 12px;
+}
+
+.btn{
+    border-radius: 10px;
+}

@@ -37,7 +37,7 @@ export class ModalUsuario implements OnChanges {
   }
 
   guardarUsuario(): void {
-    if (!this.usuario.username || !this.usuario.nombres || !this.usuario.apellido || !this.usuario.perfil) {
+    if (!this.usuario.username || !this.usuario.nombres || !this.usuario.apellido || !this.usuario.perfil || !this.usuario.email) {
       this.mensaje = 'Completá todos los campos antes de guardar.';
       this.tipoMensaje = 'danger';
       return;

@@ -4,9 +4,10 @@ import { Usuario } from '../../models/usuario';
 import { LoginApi } from '../../services/login-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { GoogleLoginComponent } from '../google-login/google-login';
 @Component({
   selector: 'app-login-form',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, GoogleLoginComponent],
   templateUrl: './login-form.html',
   styleUrl: './login-form.css',
 })

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Usuario } from '../models/usuario';
 @Injectable({
   providedIn: 'root',
 })
@@ -23,6 +24,7 @@ export class LoginApi {
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("perfil");
     sessionStorage.removeItem("userid");
+    sessionStorage.removeItem("token");
   }
   public userLoggedIn() {
     var resultado = false;
@@ -44,5 +46,19 @@ export class LoginApi {
   public getPerfil() {
     var perfil = sessionStorage.getItem("perfil");
     return perfil;
+  }
+
+  getToken():string{
+    return sessionStorage.getItem("token") as string;
+  }
+
+  public register(userform: Usuario): Observable<any>{
+    const httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    let body = JSON.stringify(userform);
+    return this._http.post(this.hostBase, body, httpOption);
   }
 }

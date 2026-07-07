@@ -1,7 +1,7 @@
 export interface Producto {
   id: number;
   nombre: string;
-  categoria: 'anillos' | 'collares' | 'aretes' | 'pulseras';
+  categoria: 'anillos' | 'collares' | 'aretes' | 'pulseras' | '';
   precio: number;
   descuento?: number;
   imagen: string;

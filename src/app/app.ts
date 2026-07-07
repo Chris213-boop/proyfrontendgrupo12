@@ -8,4 +8,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
+  constructor() { }
+  title = 'tp-angular';
 }

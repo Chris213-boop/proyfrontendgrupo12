@@ -1,24 +1,50 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { ItemCarrito } from '../models/item-carrito';
+
+export interface CompradorMp {
+  email: string,
+  name: string,
+  surname: string,
+  phone: {
+      area_code: string,
+      number: string,
+  },
+  identification:{
+      type: string,
+      number: string
+  },
+  address: {
+      street_name: string,
+      street_number: number,
+      zip_code: string
+  }
+}
+
+export interface ProductoMp {
+  title: string;
+  description: string;
+  picture_url: string;
+  category_id: string;
+  quantity: number;
+  unit_price: number;
+}
 
 export interface PreferenciaPago {
   items: ItemCarrito[];
-  comprador: {
-    nombre: string;
-    email: string;
-    telefono: string;
-    direccion: string;
-    ciudad: string;
-    provincia: string;
-  };
+  comprador: CompradorMp;
+}
+
+export interface PreferenciaPagoRequest {
+  items: ProductoMp[];
+  comprador: CompradorMp;
 }
 
 export interface RespuestaPago {
   preferenceId: string;
-  initPoint: string;    // URL de MercadoPago para redirigir al usuario
+  init_point: string;
   sandboxInitPoint: string;
 }
 
@@ -26,22 +52,32 @@ export interface RespuestaPago {
   providedIn: 'root'
 })
 export class PagoService {
-
-  // Cuando el backend esté listo, este endpoint crea la preferencia en MP
-  private apiUrl = 'https://tu-api-real.com/api/pagos/crear-preferencia';
+  private apiUrl = 'http://localhost:3000/api/mp/payment';
 
   constructor(private http: HttpClient) {}
 
-  crearPreferencia(datos: PreferenciaPago): Observable<RespuestaPago> {
-    // Cuando esté el backend, reemplazar por:
-    // return this.http.post<RespuestaPago>(this.apiUrl, datos);
-
-    // Mock: simula la respuesta de MP y redirige a una URL de sandbox
-    const mockRespuesta: RespuestaPago = {
-      preferenceId: 'mock-preference-' + Date.now(),
-      initPoint: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=mock',
-      sandboxInitPoint: 'https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=mock'
+  crearPreferencia(carrito: PreferenciaPago): Observable<RespuestaPago> {
+    const payload: PreferenciaPagoRequest = {
+      items: this.mapItemsToProductosMp(carrito.items),
+      comprador: carrito.comprador
     };
-    return of(mockRespuesta).pipe(delay(1000));
+
+    return this.http.post<RespuestaPago>(this.apiUrl, payload).pipe(
+      catchError(error => {
+        console.error('Error al crear la preferencia de pago', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  private mapItemsToProductosMp(items: ItemCarrito[]): ProductoMp[] {
+    return items.map(item => ({
+      title: item.producto.nombre,
+      description: item.producto.descripcion,
+      picture_url: item.producto.imagen,
+      category_id: item.producto.categoria,
+      quantity: item.cantidad,
+      unit_price: item.producto.precio
+    }));
   }
 }

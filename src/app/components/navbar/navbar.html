@@ -22,7 +22,7 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/contacto" routerLinkActive="active">Contacto</a>
         </li>
-        <span *ngIf="loginApi.userLoggedIn()">
+        <span *ngIf="loginApi.getPerfil()==='empleado'">
           <li class="nav-item">
             <a class="nav-link" routerLink="/stock" routerLinkActive="active">Stock</a>
           </li>

@@ -17,7 +17,18 @@
                     El usuario debe tener al menos 4 caracteres.
                 </div>
             </div>
-
+            <div class="form-group mb-4">
+            <label for="email" class="form-label fw-bold">
+                <i class="bi bi-envelope me-2"></i>Email
+            </label>
+            <input type="email" class="form-control" id="email" name="email"
+                [(ngModel)]="userform.email" placeholder="Ingrese su email" required
+                email #emailField="ngModel" />
+            <div *ngIf="emailField.invalid && emailField.touched" class="text-danger small mt-1">
+                <span *ngIf="emailField.errors?.['required']">El email es obligatorio.</span>
+                <span *ngIf="emailField.errors?.['email']">Ingrese un email válido.</span>
+            </div>
+        </div>
             <div class="form-group mb-4">
                 <label for="nombres" class="form-label fw-bold">
                     <i class="bi bi-person me-2"></i>Nombre

@@ -22,7 +22,7 @@ export class ProductoService {
       descripcion: 'Anillo solitario en plata 925 con circonia central, acabado pulido a espejo.',
       material: 'Plata 925',
       destacado: true,
-      stock: true
+      stock: 1
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ export class ProductoService {
       descripcion: 'Anillo de tres aros entrelazados, oro laminado 18k, ideal uso diario.',
       material: 'Oro laminado 18k',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 3,
@@ -46,7 +46,7 @@ export class ProductoService {
       descripcion: 'Anillo ajustable con perla cultivada, base en plata.',
       material: 'Plata y perla cultivada',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 4,
@@ -58,7 +58,7 @@ export class ProductoService {
       descripcion: 'Gargantilla fina de acero quirúrgico dorado, no se oxida ni se mancha.',
       material: 'Acero quirúrgico dorado',
       destacado: true,
-      stock: true
+      stock: 1
     },
     {
       id: 5,
@@ -70,7 +70,7 @@ export class ProductoService {
       descripcion: 'Cadena cubana clásica, eslabones macizos en oro laminado.',
       material: 'Oro laminado 18k',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 6,
@@ -82,7 +82,7 @@ export class ProductoService {
       descripcion: 'Colgante corazón en plata con baño de rodio, cadena incluida.',
       material: 'Plata 925 con baño de rodio',
       destacado: true,
-      stock: false
+      stock: 0
     },
     {
       id: 7,
@@ -94,7 +94,7 @@ export class ProductoService {
       descripcion: 'Argollas medianas en acero dorado, livianas y antialérgicas.',
       material: 'Acero quirúrgico dorado',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 8,
@@ -106,7 +106,7 @@ export class ProductoService {
       descripcion: 'Aretes tipo botón con perla cultivada, base de plata.',
       material: 'Plata y perla cultivada',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 9,
@@ -118,7 +118,7 @@ export class ProductoService {
       descripcion: 'Diseño geométrico colgante, acabado dorado mate.',
       material: 'Acero dorado mate',
       destacado: true,
-      stock: true
+      stock: 1
     },
     {
       id: 10,
@@ -130,7 +130,7 @@ export class ProductoService {
       descripcion: 'Pulsera tipo tenis con circonias engastadas en toda su extensión.',
       material: 'Plata 925',
       destacado: true,
-      stock: true
+      stock: 1
     },
     {
       id: 11,
@@ -142,7 +142,7 @@ export class ProductoService {
       descripcion: 'Cadena forzada clásica, cierre de mosquetón reforzado.',
       material: 'Oro laminado 18k',
       destacado: false,
-      stock: true
+      stock: 1
     },
     {
       id: 12,
@@ -154,7 +154,7 @@ export class ProductoService {
       descripcion: 'Base para charms intercambiables, incluye dos charms de regalo.',
       material: 'Plata 925',
       destacado: false,
-      stock: true
+      stock: 1
     }
   ];
 
@@ -168,7 +168,7 @@ export class ProductoService {
     return this.http.get<Producto[]>(`${this.apiUrl}/categoria/${categoria}`);
   }
 
-  getProductoPorId(id: number): Observable<Producto | undefined> {
+  getProductoPorId(id: number): Observable<Producto> {
     return this.http.get<Producto>(`${this.apiUrl}/${id}`);
   }
 

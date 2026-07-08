@@ -46,7 +46,7 @@
                     <div class="d-flex align-items-center justify-content-center gap-2">
                       <button class="btn btn-sm btn-outline-dark" (click)="disminuir(item.producto.id)">−</button>
                       <span class="fw-bold" style="min-width:24px">{{ item.cantidad }}</span>
-                      <button class="btn btn-sm btn-outline-dark" (click)="aumentar(item.producto.id)">+</button>
+                      <button [disabled]="item.cantidad >= item.producto.stock" class="btn btn-sm btn-outline-dark" (click)="aumentar(item.producto.id)">+</button>
                     </div>
                   </td>
                   <td class="py-3 text-center fw-bold">

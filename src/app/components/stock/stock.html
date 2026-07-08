@@ -41,10 +41,10 @@
                 {{ producto.precio | precioDescuento:(producto.descuento || 0) }}
               </span>
             </p>
-            <p *ngIf="producto.stock" class="text-success fw-semibold">
-                <i class="bi bi-check-circle me-1"></i>Disponible en stock
+            <p *ngIf="producto.stock > 0" class="text-success fw-semibold">
+                <i class="bi bi-check-circle me-1"></i>{{producto.stock}} disponible en stock
             </p>
-            <p *ngIf="!producto.stock" class="text-danger fw-semibold">
+            <p *ngIf="producto.stock == 0" class="text-danger fw-semibold">
                 <i class="bi bi-x-circle me-1"></i>Sin stock por el momento
             </p>
             <p *ngIf="producto.destacado" class="text-danger fw-semibold">
@@ -151,17 +151,15 @@
                     max="100"
                     [(ngModel)]="producto.descuento">
                 </div>
-              </div>
-
-              <div class="form-check form-switch mb-2">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  role="switch"
-                  id="stockSwitch"
-                  name="stock"
-                  [(ngModel)]="producto.stock">
-                <label class="form-check-label" for="stockSwitch">Con stock disponible</label>
+                <div class="col-6 mb-3">
+                  <label class="form-label">Stock:</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="stock"
+                    min="0"
+                    [(ngModel)]="producto.stock">
+                </div>
               </div>
 
               <div class="form-check form-switch">

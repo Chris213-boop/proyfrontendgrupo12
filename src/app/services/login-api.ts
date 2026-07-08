@@ -19,6 +19,16 @@ export class LoginApi {
     let body = JSON.stringify({ username: username, password: password });
     return this._http.post(this.hostBase + 'login', body, httpOption);
   }
+  public loginGoogle(credential: string): Observable<any> {
+    const httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    let body = JSON.stringify({ credential: credential });
+    return this._http.post(this.hostBase + 'google-login', body, httpOption);
+  }
+  
   public logout() {
     //borro el vble almacenado mediante el storage
     sessionStorage.removeItem("user");

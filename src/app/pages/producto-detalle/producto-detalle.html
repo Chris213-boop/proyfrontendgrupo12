@@ -40,10 +40,10 @@
           <span *ngIf="producto.descuento" class="badge bg-danger ms-2">-{{ producto.descuento }}%</span>
         </div>
 
-        <p *ngIf="producto.stock" class="text-success fw-semibold">
-          <i class="bi bi-check-circle me-1"></i>Disponible en stock
+        <p *ngIf="producto.stock > 0" class="text-success fw-semibold">
+          <i class="bi bi-check-circle me-1"></i>{{producto.stock}} disponibles en stock
         </p>
-        <p *ngIf="!producto.stock" class="text-danger fw-semibold">
+        <p *ngIf="producto.stock == 0" class="text-danger fw-semibold">
           <i class="bi bi-x-circle me-1"></i>Sin stock por el momento
         </p>
 
@@ -56,8 +56,10 @@
               <button class="btn btn-outline-dark" type="button" (click)="aumentarCantidad()">+</button>
             </div>
           </div>
-
           <div class="d-flex flex-column gap-2">
+            <span *ngIf="faltaStock" class="text-danger">
+              <i class="bi bi-x-circle me-1"></i>No se puede agregar mas ya que no hay mas stock
+            </span>
             <button class="btn btn-dark btn-lg" (click)="agregarAlCarrito()" [disabled]="agregado">
               <span *ngIf="!agregado"><i class="bi bi-cart-plus me-2"></i>Agregar al carrito</span>
               <span *ngIf="agregado"><i class="bi bi-check-circle me-2"></i>¡Agregado!</span>

@@ -61,7 +61,7 @@ export class Stock {
       descripcion: '',
       material: '',
       destacado: false,
-      stock: true
+      stock: 1
     };
     this.mostrarModal = true;
   }

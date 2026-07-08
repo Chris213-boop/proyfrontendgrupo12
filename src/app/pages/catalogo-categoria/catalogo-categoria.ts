@@ -5,6 +5,7 @@ import { Producto } from '../../models/producto';
 import { ProductoService } from '../../services/producto';
 import { CarritoService } from '../../services/carrito';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-catalogo-categoria',
@@ -54,13 +55,26 @@ export class CatalogoCategoria implements OnInit {
   }
 
   agregarAlCarrito(producto: Producto): void {
-    if (!producto.stock) return;
-    this.carritoService.agregar(producto, 1);
-    this.agregadoId = producto.id;
-    setTimeout(() => {
-      this.agregadoId = null;
-      this.cdr.detectChanges();
-    }, 1500);
-    this.cdr.detectChanges();
+    if (producto.stock === 0) return;
+    
+        this.carritoService.items$.pipe(take(1)).subscribe(items => {
+          const existente = items.find(i => i.producto.id === producto.id);
+          const cantidadEnCarrito = existente ? existente.cantidad : 0;
+    
+          if (producto.stock <= cantidadEnCarrito) {
+            alert("No puede agregar mas productos por falta de stock");
+            return;
+          }
+    
+          this.carritoService.agregar(producto, 1);
+          this.agregadoId = producto.id;
+          this.cdr.detectChanges();
+    
+          setTimeout(() => {
+            this.agregadoId = null;
+            this.cdr.detectChanges();
+          }, 1500);
+          this.cdr.detectChanges();
+        });
   }
 }

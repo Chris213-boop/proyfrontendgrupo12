@@ -8,5 +8,5 @@ export interface Producto {
   descripcion: string;
   material: string;
   destacado?: boolean;
-  stock: boolean;
+  stock: number;
 }

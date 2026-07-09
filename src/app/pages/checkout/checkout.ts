@@ -6,6 +6,8 @@ import { ItemCarrito } from '../../models/item-carrito';
 import { CarritoService } from '../../services/carrito';
 import { PagoService, CompradorMp } from '../../services/pago';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
+import { LoginApi } from '../../services/login-api';
+import { PedidoService, CrearPedidoRequest } from '../../services/pedido';
 
 @Component({
   selector: 'app-checkout',
@@ -25,6 +27,8 @@ export class Checkout implements OnInit {
     private carritoService: CarritoService,
     private pagoService: PagoService,
     private router: Router,
+    private pedidoService: PedidoService,
+    private loginApi: LoginApi,
     private cdr: ChangeDetectorRef
   ) {
     this.formulario = this.fb.group({
@@ -99,19 +103,40 @@ export class Checkout implements OnInit {
     this.procesando = true;
     this.error = '';
 
-    this.pagoService.crearPreferencia({
-      items: this.items,
-      comprador: this.construirComprador()
-    }).subscribe({
-      next: (respuesta) => {
-        this.carritoService.vaciar();
-        window.location.href = respuesta.init_point;
-      },
-      error: () => {
-        this.procesando = false;
-        this.error = 'No se pudo procesar el pago. Intentá de nuevo.';
-        this.cdr.detectChanges();
-      }
-    });
+
+    const pedido: CrearPedidoRequest = {
+    usuarioId: Number(this.loginApi.idLogged()),
+    items: this.items.map(item => ({
+      productoId: item.producto.id,
+      cantidad: item.cantidad,
+      precio_unitario: item.producto.descuento
+        ? item.producto.precio - (item.producto.precio * item.producto.descuento / 100)
+        : item.producto.precio
+    }))
+    };
+    this.pedidoService.crearPedido(pedido).subscribe({
+    next: (respuesta) => {
+      sessionStorage.setItem('ultimoPedidoId', respuesta.pedidoId);
+
+      this.pagoService.crearPreferencia({
+        items: this.items,
+        comprador: this.construirComprador()
+      }).subscribe({
+        next: (respuestaMp) => {
+          window.location.href = respuestaMp.init_point;
+        },
+        error: () => {
+          this.procesando = false;
+          this.error = 'No se pudo procesar el pago. Intentá de nuevo.';
+          this.cdr.detectChanges();
+        }
+      });
+    },
+    error: () => {
+      this.procesando = false;
+      this.error = 'No se pudo generar el pedido. Intentá de nuevo.';
+      this.cdr.detectChanges();
+    }
+  });
   }
 }

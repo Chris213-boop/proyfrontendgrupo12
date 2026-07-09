@@ -3,23 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ItemCarrito } from '../models/item-carrito';
+import { Pago } from '../models/pago';
 
 export interface CompradorMp {
   email: string,
   name: string,
   surname: string,
   phone: {
-      area_code: string,
-      number: string,
+    area_code: string,
+    number: string,
   },
-  identification:{
-      type: string,
-      number: string
+  identification: {
+    type: string,
+    number: string
   },
   address: {
-      street_name: string,
-      street_number: number,
-      zip_code: string
+    street_name: string,
+    street_number: number,
+    zip_code: string
   }
 }
 
@@ -52,9 +53,13 @@ export interface RespuestaPago {
   providedIn: 'root'
 })
 export class PagoService {
-  private apiUrl = 'http://localhost:3000/api/mp/payment';
 
-  constructor(private http: HttpClient) {}
+  pagos: Pago[] = [];
+
+  private apiUrl = 'http://localhost:3000/api/mp/payment';
+  private apiPagosUrl = 'http://localhost:3000/api/pagos';
+
+  constructor(private http: HttpClient) { }
 
   crearPreferencia(carrito: PreferenciaPago): Observable<RespuestaPago> {
     const payload: PreferenciaPagoRequest = {
@@ -80,4 +85,9 @@ export class PagoService {
       unit_price: item.producto.precio
     }));
   }
+
+  getPagos(): Observable<Pago[]> {
+    return this.http.get<Pago[]>(this.apiPagosUrl);
+  }
+
 }

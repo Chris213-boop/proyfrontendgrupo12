@@ -20,12 +20,16 @@ export class PagoResultado implements OnInit {
     private carritoService: CarritoService,
     private pedidoService: PedidoService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.resultado = this.route.snapshot.data['resultado'];
     const paymentId = this.route.snapshot.queryParamMap.get('payment_id') || '';
     const pedidoId = sessionStorage.getItem('ultimoPedidoId');
+
+    console.log('Resultado:', this.resultado);
+    console.log('Pedido ID:', pedidoId);
+    console.log('Payment ID:', paymentId);
 
     if (this.resultado === 'success' && pedidoId) {
       this.pedidoService.registrarPago({
@@ -33,13 +37,19 @@ export class PagoResultado implements OnInit {
         mp_payment_id: paymentId,
         estado_pago: 'APROBADO'
       }).subscribe({
-        next: () => {
+        next: (resp) => {
+
+          console.log('Pago registrado correctamente:', resp);
+
           this.carritoService.vaciar();
           sessionStorage.removeItem('ultimoPedidoId');
           this.procesando = false;
           this.cdr.detectChanges();
         },
-        error: () => {
+        error: (err) => {
+
+          console.error('Error al registrar el pago:', err);
+
           this.procesando = false;
           this.cdr.detectChanges();
         }

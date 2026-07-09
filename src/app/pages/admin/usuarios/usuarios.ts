@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Usuario } from '../../../models/usuario';
 import { ModalUsuario } from '../../../components/modal-usuario/modal-usuario';
 import { UsuarioService } from '../../../services/usuario';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-usuarios',
-  imports: [CommonModule, ModalUsuario],
+  imports: [CommonModule, ModalUsuario, FormsModule],
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.css',
 })
@@ -20,8 +21,9 @@ export class Usuarios implements OnInit {
     clientes: 0,
     total: 0
   };
+  textoBuscar: string = '';
 
-  constructor(private usuarioService: UsuarioService) { }
+  constructor(private usuarioService: UsuarioService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.cargarUsuarios();
@@ -32,6 +34,7 @@ export class Usuarios implements OnInit {
       next: (data) => {
         this.usuarios = data;
         this.actualizarEstadisticas();
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error(error);
@@ -91,6 +94,23 @@ export class Usuarios implements OnInit {
 
   usuarioRegistrado(): void {
     this.cargarUsuarios();
+  }
+
+  buscar(): void {
+    if (this.textoBuscar.trim() === '') {
+      this.cargarUsuarios();
+      return;
+    }
+
+    this.usuarioService.buscarUsuarios(this.textoBuscar).subscribe({
+      next: (data) => {
+        this.usuarios = data;
+        this.actualizarEstadisticas();
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
   }
 
 }

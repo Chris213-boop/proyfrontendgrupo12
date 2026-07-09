@@ -10,11 +10,11 @@ export class UsuarioService {
 
   private urlBase = 'http://localhost:3000/api/usuario/';
 
-  constructor(private http: HttpClient) {}
-  
+  constructor(private http: HttpClient) { }
+
 
   obtenerUsuarios(): Observable<Usuario[]> {
-    return this.http.get<Usuario[]>(this.urlBase); 
+    return this.http.get<Usuario[]>(this.urlBase);
   }
 
   agregarUsuario(usuario: Usuario): Observable<any> {
@@ -27,6 +27,10 @@ export class UsuarioService {
 
   eliminarUsuario(id: number): Observable<any> {
     return this.http.delete<any>(`${this.urlBase}${id}`);
+  }
+
+  buscarUsuarios(texto: string): Observable<any> {
+    return this.http.get<any>(`${this.urlBase}buscar/${texto}`);
   }
 
 }

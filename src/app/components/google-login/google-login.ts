@@ -53,6 +53,9 @@ export class GoogleLoginComponent implements OnInit {
             sessionStorage.setItem('userid', user.userid);
             sessionStorage.setItem('perfil', user.perfil);
             sessionStorage.setItem('token', user.token);
+            sessionStorage.setItem("nombre", user.nombre);
+            sessionStorage.setItem("apellido", user.apellido);
+            sessionStorage.setItem("email", user.email);
 
             const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 

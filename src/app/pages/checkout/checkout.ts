@@ -54,6 +54,8 @@ export class Checkout implements OnInit {
       }
       this.cdr.detectChanges();
     });
+
+    this.precargarDatosUsuario();
   }
 
   get nombre() { return this.formulario.get('nombre'); }
@@ -71,6 +73,19 @@ export class Checkout implements OnInit {
   get subtotal(): number { return this.carritoService.subtotal; }
   get envio(): number { return this.subtotal >= 40000 ? 0 : 4500; }
   get total(): number { return this.subtotal + this.envio; }
+
+  private precargarDatosUsuario(): void {
+  const nombre = sessionStorage.getItem('nombre');
+  const apellido = sessionStorage.getItem('apellido');
+  const email = sessionStorage.getItem('email');
+  // agregá acá los demás campos que tengas guardados (apellido, dni, etc.)
+
+  this.formulario.patchValue({
+    nombre: nombre ?? '',
+    apellido: apellido ?? '',
+    email: email ?? ''
+  });
+  }
 
   private construirComprador(): CompradorMp {
     const v = this.formulario.value;

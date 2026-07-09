@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { PrecioDescuentoPipe } from '../../pipes/precio-descuento-pipe';
@@ -26,8 +26,11 @@ export class Stock {
   borrando = false;
   productoABorrar: Producto | null = null;
 
+  erroMsg = '';
+
   constructor(
     private productoService: ProductoService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -36,11 +39,17 @@ export class Stock {
   }
 
   cargarProductos(){
-    this.productoService.getProductos().subscribe(productos => {
-      this.productos = productos;
-      this.cargando = false;
-      this.cdr.detectChanges();
-    });
+    this.productoService.getProductos().subscribe(
+      (productos) => {
+        this.productos = productos;
+        this.cargando = false;
+        this.cdr.detectChanges();
+      },
+      error => {
+        this.erroMsg = 'Debes ingresar con una cuenta Empleado';
+        this.cdr.detectChanges();
+        setTimeout(() => this.router.navigateByUrl('/login'), 1500);
+      });
   }
 
   editar(producto: Producto){

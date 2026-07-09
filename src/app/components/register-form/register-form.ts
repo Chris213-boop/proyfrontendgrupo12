@@ -29,7 +29,7 @@ export class RegisterForm {
       this.msgregister = 'Las contraseñas no coinciden.';
       return;
     }
-    this.userform.perfil="cliente";
+    this.userform.perfil="Cliente";
 
     this.loginApi.register(this.userform)
       .subscribe(

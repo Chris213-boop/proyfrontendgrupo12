@@ -71,4 +71,17 @@ export class LoginApi {
     let body = JSON.stringify(userform);
     return this._http.post(this.hostBase, body, httpOption);
   }
+
+  public acceso(userId:number, msg:string):Observable<any>{
+    const httpOption = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+    let body = JSON.stringify({
+      accion_realizada:msg,
+      ip_origen:"nose"
+    });
+    return this._http.post(this.hostBase + userId + '/acceso', body, httpOption);
+  }
 }

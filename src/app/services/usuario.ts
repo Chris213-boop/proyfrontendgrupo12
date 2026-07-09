@@ -11,6 +11,7 @@ export class UsuarioService {
   private urlBase = 'http://localhost:3000/api/usuario/';
 
   constructor(private http: HttpClient) {}
+  
 
   obtenerUsuarios(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(this.urlBase); 

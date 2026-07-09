@@ -29,7 +29,6 @@ export class LoginForm {
       .subscribe(
         (result) => {
           var user = result;
-          console.log(user);
           if (user.status == 1) {
             //guardamos el user en cookies en el cliente
             sessionStorage.setItem("user", user.username);
@@ -47,11 +46,21 @@ export class LoginForm {
             this.msglogin = "Credenciales incorrectas.";
             this.cdr.detectChanges();
           }
+          this.loginApi.acceso(user.userid,user.msg).subscribe(
+            (result) =>{
+              console.log(result);
+            });
         },
-        error => {
-          alert("Error de conexion");
+        error => {;
           console.log("error en conexion");
-          //console.log(error);
+          var msgError = error.error.msg
+          console.log(msgError);
+          if(msgError == "Credenciales incorrectas"){
+            this.loginApi.acceso(error.error.id, msgError).subscribe(
+            (result) =>{
+              console.log(result);
+            });
+          }
         });
   }
 }

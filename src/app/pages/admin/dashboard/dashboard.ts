@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicioDashboard, EstadisticasDashboard } from '../../../services/dashboard';
 
@@ -26,13 +26,16 @@ export class Dashboard implements OnInit {
 
   cargando = true;
 
-  constructor(private servicioDashboard: ServicioDashboard) { }
+  constructor(private servicioDashboard: ServicioDashboard,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.servicioDashboard.obtenerEstadisticas().subscribe({
       next: (datos) => {
         this.estadisticas = datos;
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.cargando = false;

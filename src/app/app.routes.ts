@@ -20,6 +20,7 @@ import { Envios } from './pages/admin/envios/envios';
 import { Seguridad } from './pages/admin/seguridad/seguridad';
 import { Sistema } from './pages/admin/sistema/sistema';
 import { PublicLayout } from './layouts/public-layout/public-layout';
+import { PagoResultado } from './pages/pago-resultado/pago-resultado';
 
 
 export const routes: Routes = [
@@ -37,6 +38,9 @@ export const routes: Routes = [
       { path: 'checkout', component: Checkout, title: 'Joyería Lumière | Checkout' },
       { path: 'login', component: LoginForm, title: 'Joyería Lumière | Iniciar Sesión' },
       { path: 'register', component: RegisterForm, title: 'Joyería Lumière | Registrar' },
+      { path: 'success', component: PagoResultado, data: { resultado: 'success' }, title: 'Pago aprobado' },
+      { path: 'failure', component: PagoResultado, data: { resultado: 'failure' }, title: 'Pago rechazado' },
+      { path: 'pending', component: PagoResultado, data: { resultado: 'pending' }, title: 'Pago pendiente' },
       { path: 'stock', component: Stock, title: 'Joyería Lumière | Stock' }
     ]
   },

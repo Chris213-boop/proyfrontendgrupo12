@@ -145,7 +145,7 @@ export class ProductoService {
       stock: 1
     },
     {
-      id: 12,
+      id: 0,
       nombre: 'Pulsera Charms Personalizable',
       categoria: 'pulseras',
       precio: 33000,
@@ -182,7 +182,8 @@ export class ProductoService {
         'Content-Type': 'application/json'
       })
     }
-    let body = JSON.stringify(producto);
+    const { id, ...productoSinId } = producto;
+    let body = JSON.stringify(productoSinId);
     return this.http.post<Producto>(this.apiUrl, body, httpOption);
   }
 

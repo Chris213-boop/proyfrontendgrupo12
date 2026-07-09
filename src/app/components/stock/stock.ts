@@ -131,7 +131,10 @@ export class Stock {
 
   montarMock(){
     const productosMock = this.productoService.getProductosMock();
-
+    if(this.productos.length != 0){
+      alert("El stock debe estar vacio para montar el mock");
+      return
+    }
     this.cargando = true;
     forkJoin(
       productosMock.map(producto => this.productoService.addProducto(producto))

@@ -28,7 +28,7 @@ export class Home implements OnInit {
 
   ngOnInit(): void {
     this.productoService.getDestacados().subscribe(productos => {
-      this.destacados = productos;
+      this.destacados = productos.filter(producto => producto.stock > 0);
       this.cargando = false;
       this.cdr.detectChanges();
     });

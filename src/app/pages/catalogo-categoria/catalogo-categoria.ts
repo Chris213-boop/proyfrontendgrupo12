@@ -48,7 +48,7 @@ export class CatalogoCategoria implements OnInit {
   private cargarProductos(): void {
     this.cargando = true;
     this.productoService.getProductosPorCategoria(this.categoria).subscribe(productos => {
-      this.productos = productos;
+      this.productos = productos.filter(producto => producto.stock > 0);
       this.cargando = false;
       this.cdr.detectChanges();
     });

@@ -47,15 +47,20 @@ export class Checkout implements OnInit {
   }
 
   ngOnInit(): void {
-    this.carritoService.items$.subscribe(items => {
+    if(this.loginApi.userLoggedIn()){
+      this.carritoService.items$.subscribe(items => {
       this.items = items;
       if (items.length === 0) {
         this.router.navigate(['/carrito']);
       }
       this.cdr.detectChanges();
-    });
-
-    this.precargarDatosUsuario();
+      });
+      this.precargarDatosUsuario();
+    }
+    else{
+      alert("Debe iniciar sesión para realizar un pedido");
+      this.router.navigate(['/login']);
+    }
   }
 
   get nombre() { return this.formulario.get('nombre'); }

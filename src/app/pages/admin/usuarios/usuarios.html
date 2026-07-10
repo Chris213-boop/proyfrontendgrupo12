@@ -9,7 +9,8 @@
                 Administra los usuarios y sus permisos.
             </small>
         </div>
-        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUsuario" (click)="abrirModalNuevo()">
+        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalUsuario"
+            (click)="abrirModalNuevo()">
             <i class="bi bi-person-plus-fill me-2"></i>
             Nuevo Usuario
         </button>
@@ -18,13 +19,14 @@
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
             <div class="input-group">
-                <span class="input-group-text">
+                <input type="text" [(ngModel)]="textoBuscar" class="form-control" placeholder="Buscar por nombre, apellido o correo...">
+                <button class="input-group-text" (click)="buscar()">
                     <i class="bi bi-search"></i>
-                </span>
-                <input type="text" class="form-control" placeholder="Buscar por nombre, apellido o correo...">
+                </button>
             </div>
         </div>
     </div>
+
     <!-- Estadísticas -->
     <div class="row g-4">
         <div class="col-lg-3">
@@ -98,14 +100,15 @@
                         <td>
                             <span class="badge" [ngClass]="{
                                 'bg-danger': obtenerNombreRol(usuario.perfil) === 'Administrador',
-                                'bg-warning text-dark': obtenerNombreRol(usuario.perfil) === 'Gerente',
+                                'bg-warning text-dark': obtenerNombreRol(usuario.perfil) === 'Empleado',
                                 'bg-primary': obtenerNombreRol(usuario.perfil) === 'Cliente'
                             }">
                                 {{ obtenerNombreRol(usuario.perfil) }}
                             </span>
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#modalUsuario" (click)="abrirModalEdicion(usuario)">
+                            <button class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal"
+                                data-bs-target="#modalUsuario" (click)="abrirModalEdicion(usuario)">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
                             <button class="btn btn-outline-danger btn-sm" (click)="eliminarUsuario(usuario)">
@@ -115,7 +118,8 @@
                     </tr>
                 </tbody>
             </table>
-            <app-modal-usuario [usuarioEditar]="usuarioSeleccionado" (usuarioGuardado)="usuarioRegistrado()"></app-modal-usuario>
+            <app-modal-usuario [usuarioEditar]="usuarioSeleccionado"
+                (usuarioGuardado)="usuarioRegistrado()"></app-modal-usuario>
         </div>
     </div>
 </div>

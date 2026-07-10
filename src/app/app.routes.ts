@@ -21,6 +21,7 @@ import { Sistema } from './pages/admin/sistema/sistema';
 import { PublicLayout } from './layouts/public-layout/public-layout';
 import { PagoResultado } from './pages/pago-resultado/pago-resultado';
 import { Pedidos } from './pages/pedidos/pedidos';
+import { DashboardEmpleado } from './pages/dashboard/dashboard';
 
 
 export const routes: Routes = [
@@ -44,6 +45,7 @@ export const routes: Routes = [
       { path: 'stock', component: Stock, title: 'Joyería Lumière | Stock' },
       { path: 'pedidos', component: Pedidos },
       { path: 'pagos', component: Pagos },
+      { path: 'estadisticas', component: DashboardEmpleado },
     ]
   },
   {

@@ -29,5 +29,6 @@ export class Navbar implements OnInit {
 
   logout() {
     this.loginApi.logout();
+    this.carritoService.vaciar();
   }
 }

@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { Pedido } from '../../../models/pedido';
-import { PedidoService } from '../../../services/pedido';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { PedidoService } from "../../services/pedido";
+import { Pedido } from "../../models/pedido";
+
 
 @Component({
-  selector: 'app-envios',
+  selector: 'app-pedidos',
   imports: [CommonModule],
-  templateUrl: './envios.html',
-  styleUrl: './envios.css',
+  templateUrl: './pedidos.html',
+  styleUrl: './pedidos.css',
 })
-export class Envios implements OnInit {
+export class Pedidos implements OnInit {
 
   pedidos: Pedido[] = [];
 

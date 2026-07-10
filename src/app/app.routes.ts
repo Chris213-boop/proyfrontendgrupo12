@@ -14,13 +14,13 @@ import { Stock } from './components/stock/stock';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
 import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Usuarios } from './pages/admin/usuarios/usuarios';
-import { Tienda } from './pages/admin/tienda/tienda';
-import { Pagos } from './pages/admin/pagos/pagos';
-import { Envios } from './pages/admin/envios/envios';
+import { Pagos } from './pages/pagos/pagos';
+
 import { Seguridad } from './pages/admin/seguridad/seguridad';
 import { Sistema } from './pages/admin/sistema/sistema';
 import { PublicLayout } from './layouts/public-layout/public-layout';
 import { PagoResultado } from './pages/pago-resultado/pago-resultado';
+import { Pedidos } from './pages/pedidos/pedidos';
 
 
 export const routes: Routes = [
@@ -41,7 +41,9 @@ export const routes: Routes = [
       { path: 'success', component: PagoResultado, data: { resultado: 'success' }, title: 'Pago aprobado' },
       { path: 'failure', component: PagoResultado, data: { resultado: 'failure' }, title: 'Pago rechazado' },
       { path: 'pending', component: PagoResultado, data: { resultado: 'pending' }, title: 'Pago pendiente' },
-      { path: 'stock', component: Stock, title: 'Joyería Lumière | Stock' }
+      { path: 'stock', component: Stock, title: 'Joyería Lumière | Stock' },
+      { path: 'pedidos', component: Pedidos },
+      { path: 'pagos', component: Pagos },
     ]
   },
   {
@@ -52,9 +54,6 @@ export const routes: Routes = [
 
       { path: 'dashboard', component: Dashboard },
       { path: 'usuarios', component: Usuarios },
-      { path: 'tienda', component: Tienda },
-      { path: 'pagos', component: Pagos },
-      { path: 'envios', component: Envios },
       { path: 'seguridad', component: Seguridad },
       { path: 'sistema', component: Sistema }
     ]

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { Pago } from '../../../models/pago';
-import { PagoService } from '../../../services/pago';
+import { Pago } from '../../models/pago';
+import { PagoService } from '../../services/pago';
 
 @Component({
   selector: 'app-pagos',

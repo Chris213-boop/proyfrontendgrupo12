@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EstadisticasDashboard, ServicioDashboard } from '../../../services/dashboard';
 import { CommonModule } from '@angular/common';
 import { LoginApi } from '../../../services/login-api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sistema',
@@ -38,6 +39,7 @@ export class Sistema implements OnInit {
 
   constructor(private servicioDashboard: ServicioDashboard,
     public loginApi: LoginApi,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -65,6 +67,8 @@ export class Sistema implements OnInit {
         console.error('Error al cargar datos del sistema:', err);
         this.error = true;
         this.cargando = false;
+        alert('Debes ingresar con una cuenta Administrador');
+        this.router.navigateByUrl('/login');
       }
     });
   }

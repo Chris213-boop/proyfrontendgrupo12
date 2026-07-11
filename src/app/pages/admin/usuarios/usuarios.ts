@@ -5,6 +5,7 @@ import { ModalUsuario } from '../../../components/modal-usuario/modal-usuario';
 import { UsuarioService } from '../../../services/usuario';
 import { FormsModule } from '@angular/forms';
 import { LoginApi } from '../../../services/login-api';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-usuarios',
@@ -26,6 +27,7 @@ export class Usuarios implements OnInit {
 
   constructor(private usuarioService: UsuarioService,
     public loginApi: LoginApi,
+    private router: Router,
     private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -41,6 +43,8 @@ export class Usuarios implements OnInit {
       },
       error: (error) => {
         console.error(error);
+        alert('Debes ingresar con una cuenta Administrador');
+        this.router.navigateByUrl('/login');
       }
     });
   }

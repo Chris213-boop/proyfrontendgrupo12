@@ -4,6 +4,7 @@ import { Configuracion } from '../../../models/configuracion';
 import { FormsModule } from '@angular/forms';
 import { LoginApi } from '../../../services/login-api';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-seguridad',
@@ -19,6 +20,7 @@ export class Seguridad {
   constructor(
     private configuracionService: ConfiguracionService,
     public loginApi: LoginApi,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -33,6 +35,8 @@ export class Seguridad {
       },
       error: (err) => {
         console.log(err);
+        alert('Debes ingresar con una cuenta Administrador');
+        this.router.navigateByUrl('/login');
       }
     });
   }

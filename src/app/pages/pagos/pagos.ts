@@ -22,7 +22,7 @@ export class Pagos implements OnInit{
   cargarPagos(): void {
     this.pagoService.getPagos().subscribe({
       next: (data) => {
-        console.log("¿Qué me está devolviendo el backend?", data);
+        console.log(data);
         this.pagos = data;
         this.cdr.detectChanges();
       },

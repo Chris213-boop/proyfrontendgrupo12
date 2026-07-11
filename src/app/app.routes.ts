@@ -21,6 +21,7 @@ import { PublicLayout } from './layouts/public-layout/public-layout';
 import { PagoResultado } from './pages/pago-resultado/pago-resultado';
 import { Pedidos } from './pages/pedidos/pedidos';
 import { DashboardEmpleado } from './pages/dashboard/dashboard';
+import { Accesos } from './pages/accesos/accesos';
 
 
 export const routes: Routes = [
@@ -45,6 +46,7 @@ export const routes: Routes = [
       { path: 'pedidos', component: Pedidos },
       { path: 'pagos', component: Pagos },
       { path: 'estadisticas', component: DashboardEmpleado },
+      { path: 'accesos', component: Accesos, title: 'Joyería Lumière | Bitácora de accesos' }
     ]
   },
   {

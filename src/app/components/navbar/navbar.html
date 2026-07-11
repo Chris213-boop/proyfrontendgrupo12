@@ -26,6 +26,9 @@
           <a class="nav-link" routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
         </li>
         <li class="nav-item" *ngIf="loginApi.getPerfil()==='Empleado'">
+          <a class="nav-link" routerLink="/accesos" routerLinkActive="active">Accesos</a>
+        </li>
+        <li class="nav-item" *ngIf="loginApi.getPerfil()==='Empleado'">
           <a class="nav-link" routerLink="/pagos" routerLinkActive="active">Pagos</a>
         </li>
         <li class="nav-item" *ngIf="loginApi.getPerfil()==='Empleado'">

@@ -80,7 +80,7 @@ export class LoginApi {
     }
     let body = JSON.stringify({
       accion_realizada:msg,
-      ip_origen:"nose"
+      ip_origen:"192.168.1.254"
     });
     return this._http.post(this.hostBase + userId + '/acceso', body, httpOption);
   }

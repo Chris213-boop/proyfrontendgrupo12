@@ -8,6 +8,15 @@ export interface EstadoSistema {
   servidor: boolean;
 }
 
+export interface InformacionSistema {
+  version: string;
+  framework: string;
+  nodeVersion: string;
+  baseDatos: string;
+  ultimaActualizacion: string;
+  emailJs: boolean;
+}
+
 export interface EstadisticasDashboard {
   usuarios: number;
   productos: number;
@@ -16,6 +25,7 @@ export interface EstadisticasDashboard {
   mensajes: number;
   clientes: number;
   estadoSistema: EstadoSistema;
+  informacionSistema?: InformacionSistema;
 }
 
 @Injectable({

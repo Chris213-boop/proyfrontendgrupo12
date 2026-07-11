@@ -20,26 +20,26 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-3">
                         <span>Backend API</span>
-                        <span class="badge bg-success">
-                            En línea
+                        <span class="badge" [class]="getBadgeClass(datosSistema.estadoSistema?.api)">
+                            {{ getEstadoTexto(datosSistema.estadoSistema?.api) }}
                         </span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Base de Datos</span>
-                        <span class="badge bg-success">
-                            Conectada
+                        <span class="badge" [class]="getBadgeClass(datosSistema.estadoSistema?.baseDatos)">
+                            {{ getEstadoTexto(datosSistema.estadoSistema?.baseDatos) }}
                         </span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Mercado Pago</span>
-                        <span class="badge bg-success">
-                            Activo
+                        <span class="badge" [class]="getBadgeClass(datosSistema.estadoSistema?.mercadoPago)">
+                            {{ getEstadoTexto(datosSistema.estadoSistema?.mercadoPago) }}
                         </span>
                     </div>
                     <div class="d-flex justify-content-between">
                         <span>EmailJS</span>
-                        <span class="badge bg-success">
-                            Disponible
+                        <span class="badge" [class]="getBadgeClass(datosSistema.informacionSistema?.emailJs)">
+                            {{ datosSistema.informacionSistema?.emailJs ? 'Disponible' : 'No disponible' }}
                         </span>
                     </div>
                 </div>
@@ -54,40 +54,11 @@
                 </div>
 
                 <div class="card-body">
-                    <p><strong>Versión:</strong> 1.0.0</p>
-                    <p><strong>Angular:</strong> 21</p>
-                    <p><strong>Node:</strong> 24</p>
-                    <p><strong>Base de Datos:</strong> PostgreSQL</p>
-                    <p><strong>Última actualización:</strong> 07/07/2026</p>
-                </div>
-            </div>
-        </div>
-        <!-- Estadísticas -->
-        <div class="col-lg-12">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <i class="bi bi-bar-chart-fill me-2"></i>
-                    Estadísticas
-                </div>
-                <div class="card-body">
-                    <div class="row text-center">
-                        <div class="col-md-3">
-                            <h3>158</h3>
-                            <small>Usuarios</small>
-                        </div>
-                        <div class="col-md-3">
-                            <h3>87</h3>
-                            <small>Productos</small>
-                        </div>
-                        <div class="col-md-3">
-                            <h3>31</h3>
-                            <small>Pedidos</small>
-                        </div>
-                        <div class="col-md-3">
-                            <h3>$1.250.000</h3>
-                            <small>Ventas</small>
-                        </div>
-                    </div>
+                    <p><strong>Versión:</strong> {{ cargando ? 'Cargando...' : datosSistema.informacionSistema?.version || 'N/D' }}</p>
+                    <p><strong>Framework:</strong> {{ cargando ? 'Cargando...' : datosSistema.informacionSistema?.framework || 'N/D' }}</p>
+                    <p><strong>Node:</strong> {{ cargando ? 'Cargando...' : datosSistema.informacionSistema?.nodeVersion || 'N/D' }}</p>
+                    <p><strong>Base de Datos:</strong> {{ cargando ? 'Cargando...' : datosSistema.informacionSistema?.baseDatos || 'N/D' }}</p>
+                    <p><strong>Última actualización:</strong> {{ cargando ? 'Cargando...' : datosSistema.informacionSistema?.ultimaActualizacion || 'N/D' }}</p>
                 </div>
             </div>
         </div>

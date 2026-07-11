@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Usuario } from '../../models/usuario';
 import { LoginApi } from '../../services/login-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Configuracion } from '../../models/configuracion';
+import { ConfiguracionService } from '../../services/configuracion';
 
 @Component({
   selector: 'app-register-form',
@@ -11,16 +13,47 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './register-form.html',
   styleUrl: './register-form.css',
 })
-export class RegisterForm {
+export class RegisterForm implements OnInit {
   userform: Usuario = new Usuario(); // usuario mapeado al formulario
   confirmPassword: string = '';
   msgregister!: string; // mensaje de error del registro
   successMsg!: string; // mensaje de éxito del registro
-
+  configuracion: Configuracion = {
+    id: 1,
+    longitudMinima: 8,
+    requiereMayusculas: true,
+    requiereNumeros: true,
+    requiereEspeciales: true,
+    intentosPermitidos: 5,
+    tiempoBloqueoMinutos: 15,
+    bloquearAutomaticamente: true,
+    tiempoInactividadMinutos: 30,
+    cerrarSesionAutomaticamente: true,
+    permitirMultiplesSesiones: false,
+    autenticacionPassword: true,
+    autenticacion2FA: false,
+    loginGoogle: false
+  };
   constructor(
     private router: Router,
     private loginApi: LoginApi,
+    private configuracionService: ConfiguracionService,
     private cdr: ChangeDetectorRef) {
+  }
+
+  ngOnInit(): void {
+    this.cargarConfiguracion();
+  }
+
+  cargarConfiguracion() {
+    this.configuracionService.getConfiguracion().subscribe({
+      next: (data) => {
+        this.configuracion = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar la configuración', err);
+      }
+    });
   }
 
   register() {
@@ -29,7 +62,7 @@ export class RegisterForm {
       this.msgregister = 'Las contraseñas no coinciden.';
       return;
     }
-    this.userform.perfil="Cliente";
+    this.userform.perfil = "Cliente";
 
     this.loginApi.register(this.userform)
       .subscribe(

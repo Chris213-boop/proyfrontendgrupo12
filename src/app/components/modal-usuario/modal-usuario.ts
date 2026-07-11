@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Usuario } from '../../models/usuario';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../services/usuario';
+import { ConfiguracionService } from '../../services/configuracion';
+import { Configuracion } from '../../models/configuracion';
 
 @Component({
   selector: 'app-modal-usuario',
@@ -10,7 +12,7 @@ import { UsuarioService } from '../../services/usuario';
   templateUrl: './modal-usuario.html',
   styleUrl: './modal-usuario.css',
 })
-export class ModalUsuario implements OnChanges {
+export class ModalUsuario implements OnChanges, OnInit {
   @Input() usuarioEditar: Usuario | null = null;
   @Output() usuarioGuardado = new EventEmitter<void>();
 
@@ -19,8 +21,28 @@ export class ModalUsuario implements OnChanges {
   tipoMensaje = '';
   guardando = false;
   modoEdicion = false;
+  confirmPassword: string = '';
 
-  constructor(private usuarioService: UsuarioService) {}
+  configuracion: Configuracion = {
+    id: 1,
+    longitudMinima: 8,
+    requiereMayusculas: true,
+    requiereNumeros: true,
+    requiereEspeciales: true,
+    intentosPermitidos: 5,
+    tiempoBloqueoMinutos: 15,
+    bloquearAutomaticamente: true,
+    tiempoInactividadMinutos: 30,
+    cerrarSesionAutomaticamente: true,
+    permitirMultiplesSesiones: false,
+    autenticacionPassword: true,
+    autenticacion2FA: false,
+    loginGoogle: false
+  };
+
+  constructor(private usuarioService: UsuarioService,
+    private configuracionService: ConfiguracionService
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['usuarioEditar']) {
@@ -36,7 +58,27 @@ export class ModalUsuario implements OnChanges {
     }
   }
 
+  ngOnInit(): void {
+    this.cargarConfiguracion();
+  }
+
+  cargarConfiguracion() {
+    this.configuracionService.getConfiguracion().subscribe({
+      next: (data) => {
+        this.configuracion = data;
+      },
+      error: (err) => {
+        console.error('Error al cargar configuración', err);
+      }
+    });
+  }
+
   guardarUsuario(): void {
+    if (this.usuario.password !== this.confirmPassword) {
+      this.mensaje = "Las contraseñas no coinciden.";
+      this.tipoMensaje = "danger";
+      return;
+    }
     if (!this.usuario.username || !this.usuario.nombres || !this.usuario.apellido || !this.usuario.perfil || !this.usuario.email) {
       this.mensaje = 'Completá todos los campos antes de guardar.';
       this.tipoMensaje = 'danger';

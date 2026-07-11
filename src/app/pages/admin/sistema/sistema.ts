@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EstadisticasDashboard, ServicioDashboard } from '../../../services/dashboard';
 import { CommonModule } from '@angular/common';
 import { LoginApi } from '../../../services/login-api';
@@ -37,7 +37,8 @@ export class Sistema implements OnInit {
   error = false;
 
   constructor(private servicioDashboard: ServicioDashboard,
-    public loginApi: LoginApi
+    public loginApi: LoginApi,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +59,7 @@ export class Sistema implements OnInit {
             datos.informacionSistema ?? this.datosSistema.informacionSistema,
         };
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar datos del sistema:', err);

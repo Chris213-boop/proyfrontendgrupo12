@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ConfiguracionService } from '../../../services/configuracion';
 import { Configuracion } from '../../../models/configuracion';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +18,8 @@ export class Seguridad {
   configuracion: Configuracion = new Configuracion();
   constructor(
     private configuracionService: ConfiguracionService,
-    public loginApi: LoginApi
+    public loginApi: LoginApi,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -28,6 +29,7 @@ export class Seguridad {
     this.configuracionService.getConfiguracion().subscribe({
       next: (data) => {
         this.configuracion = data;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.log(err);

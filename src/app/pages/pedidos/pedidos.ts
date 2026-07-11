@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { PedidoService } from "../../services/pedido";
 import { Pedido } from "../../models/pedido";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -14,7 +15,7 @@ export class Pedidos implements OnInit {
 
   pedidos: Pedido[] = [];
 
-  constructor(private pedidoService: PedidoService, private cdr: ChangeDetectorRef) { }
+  constructor(private pedidoService: PedidoService, private router: Router, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.cargarPedidos();
@@ -27,7 +28,8 @@ export class Pedidos implements OnInit {
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error(error);
+        alert('Debes ingresar con una cuenta Empleado');
+        this.router.navigateByUrl('/login');
       }
     });
   }

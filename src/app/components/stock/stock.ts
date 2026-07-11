@@ -46,9 +46,8 @@ export class Stock {
         this.cdr.detectChanges();
       },
       error => {
-        this.erroMsg = 'Debes ingresar con una cuenta Empleado';
-        this.cdr.detectChanges();
-        setTimeout(() => this.router.navigateByUrl('/login'), 1500);
+        alert('Debes ingresar con una cuenta Empleado');
+        this.router.navigateByUrl('/login');
       });
   }
 

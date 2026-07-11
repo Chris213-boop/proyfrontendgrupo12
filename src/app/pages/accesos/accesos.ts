@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccesoService } from '../../services/acceso';
 import { Acceso } from '../../models/acceso';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accesos',
@@ -16,6 +17,7 @@ export class Accesos implements OnInit {
 
   constructor(
     private accesoService: AccesoService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -31,6 +33,8 @@ export class Accesos implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar la bitácora de accesos:', err);
+        alert('Debes ingresar con una cuenta Empleado');
+        this.router.navigateByUrl('/login');
       }
     });
   }

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { Pago } from '../../models/pago';
 import { PagoService } from '../../services/pago';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pagos',
@@ -13,7 +14,7 @@ export class Pagos implements OnInit{
 
   pagos: Pago[] = [];
   private cdr = inject(ChangeDetectorRef);
-  constructor(private pagoService: PagoService) {}
+  constructor(private pagoService: PagoService, private router: Router,) {}
 
   ngOnInit(): void {
     this.cargarPagos();
@@ -27,7 +28,8 @@ export class Pagos implements OnInit{
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error(err);
+        alert('Debes ingresar con una cuenta Empleado');
+        this.router.navigateByUrl('/login');
       }
     });
   }

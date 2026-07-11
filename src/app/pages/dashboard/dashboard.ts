@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { EstadisticaService } from '../../services/estadistica';
+import { Router } from '@angular/router';
 
 // Registramos todos los componentes necesarios de Chart.js (líneas, barras, tortas, etc.)
 Chart.register(...registerables);
@@ -35,6 +36,7 @@ export class DashboardEmpleado implements OnInit, AfterViewInit {
 
   constructor(
     private estadisticaService: EstadisticaService,
+    private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
 
@@ -46,6 +48,11 @@ export class DashboardEmpleado implements OnInit, AfterViewInit {
     this.estadisticaService.getTotalVentas().subscribe({
       next: (resp) => {
         this.totalVentas = Number(resp.total);
+      },
+      error: (err) => {
+        console.error('Error al cargar las estadisticas:', err);
+        alert('Debes ingresar con una cuenta Empleado');
+        this.router.navigateByUrl('/login');
       }
     });
     this.estadisticaService.getPedidosPendientes().subscribe({

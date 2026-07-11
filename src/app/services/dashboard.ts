@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface EstadoSistema {
@@ -34,21 +35,9 @@ export interface EstadisticasDashboard {
 export class ServicioDashboard {
   private urlApi = 'http://localhost:3000/api/dashboard/stats';
 
-  obtenerEstadisticas(): Observable<EstadisticasDashboard> {
-    return new Observable((observador) => {
-      fetch(this.urlApi)
-        .then(async (respuesta) => {
-          if (!respuesta.ok) {
-            throw new Error('No se pudo cargar el dashboard');
-          }
+  constructor(private http: HttpClient) {}
 
-          const datos = await respuesta.json();
-          observador.next(datos);
-          observador.complete();
-        })
-        .catch((error) => {
-          observador.error(error);
-        });
-    });
+  obtenerEstadisticas(): Observable<EstadisticasDashboard> {
+    return this.http.get<EstadisticasDashboard>(this.urlApi);
   }
 }

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { EstadisticasDashboard, ServicioDashboard } from '../../../services/dashboard';
+import { CommonModule } from '@angular/common';
+import { LoginApi } from '../../../services/login-api';
 
 @Component({
   selector: 'app-sistema',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './sistema.html',
   styleUrl: './sistema.css',
 })
@@ -34,7 +36,9 @@ export class Sistema implements OnInit {
   cargando = true;
   error = false;
 
-  constructor(private servicioDashboard: ServicioDashboard) {}
+  constructor(private servicioDashboard: ServicioDashboard,
+    public loginApi: LoginApi
+  ) { }
 
   ngOnInit(): void {
     this.cargarDatos();
@@ -48,20 +52,10 @@ export class Sistema implements OnInit {
       next: (datos) => {
         this.datosSistema = {
           ...datos,
-          estadoSistema: datos.estadoSistema ?? {
-            api: false,
-            baseDatos: false,
-            mercadoPago: false,
-            servidor: false
-          },
-          informacionSistema: datos.informacionSistema ?? {
-            version: '1.0.0',
-            framework: 'Angular 21',
-            nodeVersion: 'N/D',
-            baseDatos: 'PostgreSQL',
-            ultimaActualizacion: 'N/D',
-            emailJs: false
-          }
+          estadoSistema:
+            datos.estadoSistema ?? this.datosSistema.estadoSistema,
+          informacionSistema:
+            datos.informacionSistema ?? this.datosSistema.informacionSistema,
         };
         this.cargando = false;
       },

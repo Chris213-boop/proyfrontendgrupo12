@@ -12,7 +12,6 @@ import { LoginForm } from './components/login-form/login-form';
 import { RegisterForm } from './components/register-form/register-form';
 import { Stock } from './components/stock/stock';
 import { AdminLayout } from './layouts/admin-layout/admin-layout';
-import { Dashboard } from './pages/admin/dashboard/dashboard';
 import { Usuarios } from './pages/admin/usuarios/usuarios';
 import { Pagos } from './pages/pagos/pagos';
 
@@ -52,9 +51,8 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminLayout,
     children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'usuarios', pathMatch: 'full' },
 
-      { path: 'dashboard', component: Dashboard },
       { path: 'usuarios', component: Usuarios },
       { path: 'seguridad', component: Seguridad },
       { path: 'sistema', component: Sistema }

@@ -1,44 +1,76 @@
-<div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="fw-bold mb-0">Gestión de Pedidos</h2>
-            <small class="text-muted">Consulta el historial de pedidos registrados por los clientes.</small>
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white">
+            <h4 class="m-0 fw-bold">📋 Historial de Pedidos y Detalles</h4>
         </div>
-    </div>
-    <div class="card shadow-sm border-0 mt-4">
-        <div class="card-header bg-white">
-            <h5 class="mb-0">
-                Pedidos
-            </h5>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente ID</th>
-                        <th>Fecha de emision</th>
-                        <th>Total</th>
-                        <th>Estado de Pedido</th>
-                        <th>ID Mercado Pago</th>
-                        <th>Modificaciónes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let pedido of pedidos">
-                        <td>{{ pedido.id }}</td>
-                        <td>
-                            {{ pedido.Usuario.nombres}}
-                            {{ pedido.Usuario.apellido}}
-                        </td>
-                        <td>{{ pedido.fecha | date:'dd/MM/yyyy HH:mm' }}</td>
-                        <td>{{ pedido.total }}</td>
-                        <td>{{ pedido.estado_envio }}</td>
-                        <td>{{ pedido.id_mercado_pago }}</td>
-                        <td>{{ pedido.updatedAt | date:'dd/MM/yyyy HH:mm'}}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 8%">ID</th>
+                            <th style="width: 15%">Cliente</th>
+                            <th style="width: 15%">Fecha</th>
+                            <!-- Columna clave para los detalles internos -->
+                            <th style="width: 40%">Productos Seleccionados</th>
+                            <th style="width: 12%">Total</th>
+                            <th style="width: 10%">Envío</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let pedido of pedidos">
+                            <td class="fw-bold">#{{ pedido.id }}</td>
+                            <td>
+                                <span class="d-block fw-semibold text-capitalize">
+                                    {{ pedido.Usuario.nombres }} {{ pedido.Usuario.apellido }}
+                                </span>
+                            </td>
+                            <td class="text-muted">
+                                {{ pedido.fecha | date:'dd/MM/yyyy HH:mm' }}
+                            </td>
+
+                            <!-- COLUMNA SOLICITADA: Render de Detalles Anidados -->
+                            <td>
+                                <div class="bg-light p-2 rounded border-start border-3 border-secondary"
+                                    *ngIf="pedido.detalles && pedido.detalles.length > 0">
+                                    <ul class="list-unstyled mb-0">
+                                        <li *ngFor="let det of pedido.detalles"
+                                            class="py-1 border-bottom border-light last-border-0 small">
+                                            <!-- Usamos el operador safe navigation (?) para evitar errores si el producto tarda en cargar -->
+                                            <span class="fw-bold text-dark">{{ det.cantidad }}x</span>
+                                            <span class="mx-1 text-secondary">{{ det.Producto?.nombre }}</span>
+                                            <span class="text-muted float-end">${{ det.precio_unitario | number:'1.2-2'
+                                                }} c/u</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <span *ngIf="!pedido.detalles || pedido.detalles.length === 0"
+                                    class="text-muted small italic">
+                                    Sin ítems registrados
+                                </span>
+                            </td>
+
+                            <td class="fw-bold text-success">
+                                ${{ pedido.total | number:'1.2-2' }}
+                            </td>
+                            <td>
+                                <span class="badge" [ngClass]="{
+                        'bg-warning text-dark': pedido.estado_envio === 'Pendiente',
+                        'bg-primary': pedido.estado_envio === 'Despachado',
+                        'bg-success': pedido.estado_envio === 'Entregado'
+                      }">
+                                    {{ pedido.estado_envio }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr *ngIf="pedidos.length === 0">
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                No hay pedidos registrados en el sistema.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { EstadisticaService } from '../../services/estadistica';
 
@@ -34,7 +34,8 @@ export class DashboardEmpleado implements OnInit, AfterViewInit {
   productosSinStock = 0;
 
   constructor(
-    private estadisticaService: EstadisticaService
+    private estadisticaService: EstadisticaService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -50,11 +51,13 @@ export class DashboardEmpleado implements OnInit, AfterViewInit {
     this.estadisticaService.getPedidosPendientes().subscribe({
       next: (resp) => {
         this.pedidosPendientes = resp.cantidad;
+        this.cdr.detectChanges();
       }
     });
     this.estadisticaService.getProductosSinStock().subscribe({
       next: (resp) => {
         this.productosSinStock = resp.cantidad;
+        this.cdr.detectChanges();
       }
     });
   }

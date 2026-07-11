@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { PedidoService } from "../../services/pedido";
 import { Pedido } from "../../models/pedido";
 
@@ -14,7 +14,7 @@ export class Pedidos implements OnInit {
 
   pedidos: Pedido[] = [];
 
-  constructor(private pedidoService: PedidoService) { }
+  constructor(private pedidoService: PedidoService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.cargarPedidos();
@@ -24,6 +24,7 @@ export class Pedidos implements OnInit {
     this.pedidoService.obtenerPedidos().subscribe({
       next: (data) => {
         this.pedidos = data;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error(error);

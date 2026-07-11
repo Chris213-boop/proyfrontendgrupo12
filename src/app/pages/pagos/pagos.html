@@ -1,41 +1,73 @@
 <div class="container py-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
     <div>
-      <h2 class="fw-bold mb-0">Gestión de Pagos</h2>
-      <small class="text-muted">Consulta el historial de pagos registrados por los clientes.</small>
+      <h2 class="fw-bold mb-1 text-dark">Gestión de Pagos</h2>
+      <p class="text-muted mb-0">Monitorea los ingresos y estados de transacciones de Mercado Pago.</p>
+    </div>
+    <div>
+      <span class="badge bg-light text-dark border px-3 py-2 fs-6 shadow-sm">
+        <i class="bi bi-wallet2 me-2 text-primary"></i>Total: {{ pagos.length }} operaciones
+      </span>
     </div>
   </div>
 
-  <div class="card shadow-sm border-0">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-      <h5 class="mb-0">Lista de pagos</h5>
-      <span class="badge bg-warning text-dark">{{ pagos.length }} pagos</span>
+  <div class="card shadow-sm border-0 overflow-hidden">
+    <div class="card-header bg-white py-3">
+      <h5 class="mb-0 fw-semibold text-secondary">Historial de Transacciones</h5>
     </div>
 
     <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
-        <thead class="table-light">
+      <table class="table table-hover align-middle mb-0 text-nowrap">
+        <thead class="table-light text-uppercase fs-7 tracking-wider text-muted">
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Estado del pago</th>
-            <th scope="col">Fecha y Hora</th>
+            <th scope="col" class="ps-4">ID Transacción</th>
+            <th scope="col">Cliente / Pedido</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Monto</th>
+            <th scope="col" class="pe-4 text-center">Estado</th>
           </tr>
         </thead>
         <tbody>
+          <tr *ngIf="pagos.length === 0">
+            <td colspan="5" class="text-center py-5 text-muted">
+              <i class="bi bi-credit-card fs-1 d-block mb-2 text-black-50"></i>
+              No se registraron pagos en el sistema.
+            </td>
+          </tr>
+
           <tr *ngFor="let p of pagos">
-            <th scope="row">{{ p.mp_payment_id }}</th>
-            <td>
-              <span class="badge" [ngClass]="{
-                'bg-success': p.estado_pago === 'approved' || p.estado_pago === 'APROBADO',
-                'bg-warning text-dark': p.estado_pago === 'pending' || p.estado_pago === 'PENDIENTE',
-                'bg-danger': p.estado_pago === 'rejected' || p.estado_pago === 'RECHAZADO'
-              }">
-                {{ p.estado_pago }}
+            <td class="ps-4">
+              <span class="font-monospace fw-medium text-secondary" [title]="p.mp_payment_id">
+                #{{ p.mp_payment_id || 'N/A' }}
               </span>
             </td>
+
             <td>
-              <div class="fw-semibold">{{ p.fecha_pago | date:'dd/MM/yyyy' }}</div>
-              <small class="text-muted">{{ p.fecha_pago | date:'HH:mm' }}</small>
+
+
+              <small class="text-muted d-block">Pedido Ref: <span class="fw-semibold">#{{ p.pedidoId }}</span></small>
+            </td>
+
+            <td>
+              <div class="fw-medium text-dark">{{ p.fecha_pago | date:'dd MMM, yyyy' }}</div>
+              <small class="text-muted text-xs">{{ p.fecha_pago | date:'hh:mm a' }}</small>
+            </td>
+
+            <td>
+              <div class="fw-bold text-dark">
+                {{ (p.Pedido?.total || 0) }}
+              </div>
+            </td>
+
+            <td class="pe-4 text-center">
+              <span class="badge rounded-pill px-3 py-2 fw-semibold" [ngClass]="{
+                'bg-success-subtle text-success border border-success-subtle': p.estado_pago === 'approved' || p.estado_pago === 'APROBADO',
+                'bg-warning-subtle text-warning-emphasis border border-warning-subtle': p.estado_pago === 'pending' || p.estado_pago === 'PENDIENTE',
+                'bg-danger-subtle text-danger border border-danger-subtle': p.estado_pago === 'rejected' || p.estado_pago === 'RECHAZADO'
+              }">
+                {{ (p.estado_pago === 'approved' || p.estado_pago === 'APROBADO') ? 'Aprobado' :
+                (p.estado_pago === 'pending' || p.estado_pago === 'PENDIENTE') ? 'Pendiente' : 'Rechazado' }}
+              </span>
             </td>
           </tr>
         </tbody>

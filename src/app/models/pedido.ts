@@ -4,6 +4,10 @@ export interface Detalle {
     productoId: number;
     cantidad: number;
     precio_unitario: number;
+    Producto?: {
+        nombre: string;
+        precio: number;
+    };
 }
 
 export interface Usuario {

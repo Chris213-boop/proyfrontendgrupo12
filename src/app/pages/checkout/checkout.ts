@@ -78,7 +78,6 @@ export class Checkout implements OnInit {
   const nombre = sessionStorage.getItem('nombre');
   const apellido = sessionStorage.getItem('apellido');
   const email = sessionStorage.getItem('email');
-  // agregá acá los demás campos que tengas guardados (apellido, dni, etc.)
 
   this.formulario.patchValue({
     nombre: nombre ?? '',
@@ -110,16 +109,15 @@ export class Checkout implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.formulario.invalid) {
-      this.formulario.markAllAsTouched();
-      return;
-    }
+  if (this.formulario.invalid) {
+    this.formulario.markAllAsTouched();
+    return;
+  }
 
-    this.procesando = true;
-    this.error = '';
+  this.procesando = true;
+  this.error = '';
 
-
-    const pedido: CrearPedidoRequest = {
+  const pedido: CrearPedidoRequest = {
     usuarioId: Number(this.loginApi.idLogged()),
     items: this.items.map(item => ({
       productoId: item.producto.id,
@@ -128,21 +126,44 @@ export class Checkout implements OnInit {
         ? item.producto.precio - (item.producto.precio * item.producto.descuento / 100)
         : item.producto.precio
     }))
-    };
-    this.pedidoService.crearPedido(pedido).subscribe({
-    next: (respuesta) => {
-      sessionStorage.setItem('ultimoPedidoId', respuesta.pedidoId);
+  };
 
-      this.pagoService.crearPreferencia({
-        items: this.items,
-        comprador: this.construirComprador()
+  // craecion de pedido y pago
+  this.pedidoService.crearPedido(pedido).subscribe({
+    next: (respuestaPedido) => {
+      
+      // Simulamos un ID de operación de MercadoPago 
+      const idPagoSimulado = 'TEST-123456789';
+
+      // registar pago
+      this.pedidoService.registrarPago({
+        pedidoId: Number(respuestaPedido.pedidoId),
+        mp_payment_id: idPagoSimulado,
+        estado_pago: 'approved'
       }).subscribe({
-        next: (respuestaMp) => {
-          window.location.href = respuestaMp.init_point;
+        next: (respuestaPago) => {
+          console.log('¡Pago pre-registrado con éxito de forma local!', respuestaPago);
+
+          this.pagoService.crearPreferencia({
+            items: this.items,
+            comprador: this.construirComprador()
+          }).subscribe({
+            next: (respuestaMp) => {
+              this.carritoService.vaciar();
+              //redireccionamiento
+              window.location.href = respuestaMp.init_point;
+            },
+            error: () => {
+              this.procesando = false;
+              this.error = 'Pedido guardado, pero falló la conexión con MercadoPago.';
+              this.cdr.detectChanges();
+            }
+          });
         },
-        error: () => {
+        error: (err) => {
+          console.error('Error al registrar el pago en la BD local:', err);
           this.procesando = false;
-          this.error = 'No se pudo procesar el pago. Intentá de nuevo.';
+          this.error = 'No se pudo procesar el registro del pago.';
           this.cdr.detectChanges();
         }
       });
@@ -153,5 +174,5 @@ export class Checkout implements OnInit {
       this.cdr.detectChanges();
     }
   });
-  }
+}
 }

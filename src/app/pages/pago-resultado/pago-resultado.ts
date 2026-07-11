@@ -6,6 +6,7 @@ import { PedidoService } from '../../services/pedido';
 
 @Component({
   selector: 'app-pago-resultado',
+  standalone: true,
   imports: [CommonModule, RouterLink],
   templateUrl: './pago-resultado.html',
   styleUrl: './pago-resultado.css'
@@ -24,38 +25,47 @@ export class PagoResultado implements OnInit {
 
   ngOnInit(): void {
     this.resultado = this.route.snapshot.data['resultado'];
-    const paymentId = this.route.snapshot.queryParamMap.get('payment_id') || '';
-    const pedidoId = sessionStorage.getItem('ultimoPedidoId');
 
-    console.log('Resultado:', this.resultado);
-    console.log('Pedido ID:', pedidoId);
-    console.log('Payment ID:', paymentId);
+    // parámetros dinámicos de la URL que inyecta MercadoPago al volver
+    this.route.queryParams.subscribe(params => {
+      const paymentId = params['payment_id'] || '';
+      
+      // recupero el ID persistido localmente
+      const pedidoId = localStorage.getItem('ultimoPedidoId');
 
-    if (this.resultado === 'success' && pedidoId) {
-      this.pedidoService.registrarPago({
-        pedidoId: Number(pedidoId),
-        mp_payment_id: paymentId,
-        estado_pago: 'APROBADO'
-      }).subscribe({
-        next: (resp) => {
+      console.log('--- RETORNO MP ---');
+      console.log('Estado Resultado:', this.resultado);
+      console.log('Pedido ID Local:', pedidoId);
+      console.log('ID Pago MercadoPago:', paymentId);
 
-          console.log('Pago registrado correctamente:', resp);
-
-          this.carritoService.vaciar();
-          sessionStorage.removeItem('ultimoPedidoId');
-          this.procesando = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-
-          console.error('Error al registrar el pago:', err);
-
-          this.procesando = false;
-          this.cdr.detectChanges();
-        }
-      });
-    } else {
-      this.procesando = false;
-    }
+      if (this.resultado === 'success' && pedidoId && paymentId) {
+        
+        // petición HTTP mandando el body estructurado
+        this.pedidoService.registrarPago({
+          pedidoId: Number(pedidoId),
+          mp_payment_id: paymentId,
+          estado_pago: 'approved'
+        }).subscribe({
+          next: (resp) => {
+            console.log('Backend respondió con éxito:', resp);
+            
+            // Limpieza
+            this.carritoService.vaciar();
+            localStorage.removeItem('ultimoPedidoId'); // Borramos el ID recién acá
+            
+            this.procesando = false;
+            this.cdr.detectChanges();
+          },
+          error: (err) => {
+            console.error('Error al intentar registrar el pago desde el componente:', err);
+            this.procesando = false;
+            this.cdr.detectChanges();
+          }
+        });
+      } else {
+        this.procesando = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 }

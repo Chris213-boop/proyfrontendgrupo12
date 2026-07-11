@@ -17,7 +17,7 @@ export interface CrearPedidoRequest {
 export interface RegistrarPagoRequest {
   pedidoId: number;
   mp_payment_id: string;
-  estado_pago: 'APROBADO' | 'RECHAZADO';
+  estado_pago: 'approved' | 'rejected' | 'pending';
 }
 
 @Injectable({

@@ -28,7 +28,7 @@
         <li class="nav-item" *ngIf="loginApi.getPerfil()==='Empleado'">
           <a class="nav-link" routerLink="/pagos" routerLinkActive="active">Pagos</a>
         </li>
-        <li class="nav-item" >
+        <li class="nav-item" *ngIf="loginApi.getPerfil()==='Empleado'">
           <a class="nav-link" routerLink="/estadisticas" routerLinkActive="active">Dashboard</a>
         </li>
         <span *ngIf="loginApi.getPerfil()==='Empleado'">

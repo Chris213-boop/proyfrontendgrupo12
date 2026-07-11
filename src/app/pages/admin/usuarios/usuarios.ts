@@ -109,6 +109,7 @@ export class Usuarios implements OnInit {
       next: (data) => {
         this.usuarios = data;
         this.actualizarEstadisticas();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error(err);

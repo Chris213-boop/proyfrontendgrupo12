@@ -4,6 +4,7 @@ import { Usuario } from '../../../models/usuario';
 import { ModalUsuario } from '../../../components/modal-usuario/modal-usuario';
 import { UsuarioService } from '../../../services/usuario';
 import { FormsModule } from '@angular/forms';
+import { LoginApi } from '../../../services/login-api';
 
 @Component({
   selector: 'app-usuarios',
@@ -23,7 +24,9 @@ export class Usuarios implements OnInit {
   };
   textoBuscar: string = '';
 
-  constructor(private usuarioService: UsuarioService, private cdr: ChangeDetectorRef) { }
+  constructor(private usuarioService: UsuarioService,
+    public loginApi: LoginApi,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.cargarUsuarios();
